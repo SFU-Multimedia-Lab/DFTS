@@ -38,11 +38,13 @@ def runSimulation():
         print("We currently do not support that model. Please try a valid one.")
         sys.exit(1)
 
-    BM(model, args['layer'])
-    deviceOut            = simmods.deviceSim(BM.deviceModel, args['image'])
+    testModel = BM(model, args['layer'])
+    testModel.splitModel()
+    print(testModel.deviceModel)
+    deviceOut            = simmods.deviceSim(testModel.deviceModel, args['image'], args['model'])
     compressOut          = simmods.compress(deviceOut)
     channelOut           = simmods.transmit()
-    remoteOut            = simmods.remoteSim(BM.remoteModel, channelOut)
+    remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
     errorCalc(remoteOut, actualOut)
 
 if __name__ == '__main__':

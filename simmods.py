@@ -1,15 +1,11 @@
 from utils import preprocess
-from keras.layers import Input
 
-def deviceSim(model, testImage):
+def deviceSim(model, testImage, modelName):
     '''
         * simulate a user device
         * runs the image through the pretrained model up until the specified layer number
     '''
-    # print(modelDict)
-    # return (2,3)
-
-    preprocessedImage = preprocess(testImage, model)
+    preprocessedImage = preprocess(testImage, modelName)
     deviceOut         = model.predict(preprocessedImage)
     return deviceOut
 
