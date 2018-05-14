@@ -2,6 +2,8 @@ import argparse
 import numpy as np
 import simmods
 from utils import errorCalc
+from BrokenModel import BrokenModel as BM
+import sys
 
 def argumentReader():
     '''
@@ -25,11 +27,22 @@ def runSimulation():
         * Other Part runs in the cloud: remoteSim
     '''
     args = argumentReader()
-    deviceOut, actualOut = simmods.deviceSim(args['model'], args['layer'], args['image'])
-    print("hello")
+
+    modelDict = {'xception':'Xception', 'vgg16':'VGG16', 'VGG19':'VGG19', 'resnet50':'ResNet50',
+                 'inceptionv3':'InceptionV3', 'inceptionresnetv2':'InceptionResnetV2',
+                 'mobilenet':'MobileNet', 'densenet':'DenseNet','nasnet':'NASNet'}
+
+    try:
+        model = modelDict[args['model'].lower()]
+    except KeyError:
+        print("We currently do not support that model. Please try a valid one.")
+        sys.exit(1)
+
+    BM(model, args['layer'])
+    deviceOut            = simmods.deviceSim(BM.deviceModel, args['image'])
     compressOut          = simmods.compress(deviceOut)
     channelOut           = simmods.transmit()
-    remoteOut            = simmods.remoteSim(channelOut)
+    remoteOut            = simmods.remoteSim(BM.remoteModel, channelOut)
     errorCalc(remoteOut, actualOut)
 
 if __name__ == '__main__':
