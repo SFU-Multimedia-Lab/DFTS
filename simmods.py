@@ -1,4 +1,4 @@
-from utils import preprocess
+from utils import preprocess, randomChoice
 
 def deviceSim(model, testImage, modelName):
     '''
@@ -10,10 +10,16 @@ def deviceSim(model, testImage, modelName):
     return deviceOut
 
 def compress(deviceOut):
-    pass
+    #initially identity function
+    return deviceOut
 
-def transmit():
-    pass
+def transmit(compressOut, lossProb):
+    #default packet length is one row of the feature map
+    compressOut = compressOut.flatten().reshape(-1, compressOut.shape[1])
+    print(compressOut[2000])
+    lossMatrix  = randomChoice(lossProb, compressOut.shape[0])
+    # print(lossMatrix)
+    return compressOut*lossMatrix[:, None]
 
 def remoteSim(remoteModel ,channelOut):
     pass

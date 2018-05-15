@@ -16,3 +16,10 @@ def preprocess(testImage, model):
     exec("from keras.applications."+model.lower()+" import preprocess_input", globals())
     x = preprocess_input(x)
     return x
+
+def randomChoice(lossProb, lossSize):
+    #more robust implementation refer to my TSP implementation
+    lossMatrix = np.random.random(lossSize)
+    probMatrix = np.empty(lossSize)
+    probMatrix.fill(lossProb)
+    return np.less_equal(lossMatrix, probMatrix).astype('float32')

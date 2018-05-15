@@ -5,6 +5,9 @@ from utils import errorCalc
 from BrokenModel import BrokenModel as BM
 import sys
 
+#modify UI to accept configuration file
+#add a packet loss probability as well
+
 def argumentReader():
     '''
         * Read in command line arguments
@@ -42,8 +45,14 @@ def runSimulation():
     testModel.splitModel()
     print(testModel.deviceModel)
     deviceOut            = simmods.deviceSim(testModel.deviceModel, args['image'], args['model'])
+
+    b = deviceOut
+    # b = b.flatten()
+    print(b.shape)
+
     compressOut          = simmods.compress(deviceOut)
-    channelOut           = simmods.transmit()
+    channelOut           = simmods.transmit(compressOut, 0.4) #second param is the packet loss prob
+    print(channelOut[2000])
     remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
     errorCalc(remoteOut, actualOut)
 
