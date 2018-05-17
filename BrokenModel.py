@@ -9,7 +9,7 @@ class BrokenModel(object):
         super(BrokenModel, self).__init__()
         self.modelName  = modelName
         #modify below function to suit different models
-        self.model      = getattr(keras.applications,f"{modelName}")(weights='imagenet', include_top=False)
+        self.model      = getattr(keras.applications,f"{modelName}")(weights='imagenet', classes=1000)
         self.layers     = [i.name for i in self.model.layers]
         self.splitLayer = splitLayer
         self.layerLoc   = self.layers.index(self.splitLayer)

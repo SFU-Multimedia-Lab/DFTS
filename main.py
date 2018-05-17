@@ -43,18 +43,17 @@ def runSimulation():
 
     testModel = BM(model, args['layer'])
     testModel.splitModel()
-    print(testModel.deviceModel)
+    # print(testModel.deviceModel.summary())
     deviceOut            = simmods.deviceSim(testModel.deviceModel, args['image'], args['model'])
-
-    b = deviceOut
-    # b = b.flatten()
-    print(b.shape)
-
     compressOut          = simmods.compress(deviceOut)
-    channelOut           = simmods.transmit(compressOut, 0.4) #second param is the packet loss prob
-    print(channelOut[2000])
-    remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
-    errorCalc(remoteOut, actualOut)
+    channelOut, pLen, bS = simmods.transmit(compressOut, 0.4) #second param is the packet loss prob
+    # print(channelOut[2000])
+    # print(testModel.remoteModel.summary())
+    remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut, pLen, bS)
+
+    exec("from keras.applications."+model.lower()+" import decode_predictions", globals())
+    print(decode_predictions(remoteOut, top=5)[0])
+    # errorCalc(remoteOut, actualOut)
 
 if __name__ == '__main__':
     runSimulation()
