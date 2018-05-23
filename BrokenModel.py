@@ -13,8 +13,6 @@ class BrokenModel(object):
         self.layers     = [i.name for i in self.model.layers]
         self.splitLayer = splitLayer
         self.layerLoc   = self.layers.index(self.splitLayer)
-        print(self.layers)
-        print(self.layerLoc)
 
     def splitModel(self):
         self.deviceModel = Model(inputs=self.model.input, outputs=self.model.layers[self.layerLoc].output)
