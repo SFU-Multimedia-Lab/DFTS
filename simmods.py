@@ -1,13 +1,14 @@
 from utils import preprocess, randomChoice
 import numpy as np
 
-def deviceSim(model, testImage, modelName):
+def deviceSim(model, testImagePath, modelName):
     '''
         * simulate a user device
         * runs the image through the pretrained model up until the specified layer number
     '''
-    preprocessedImage = preprocess(testImage, modelName)
-    deviceOut         = model.predict(preprocessedImage)
+
+    preprocessedImageList = preprocess(testImagePath, modelName)
+    deviceOut         = model.predict(preprocessedImageList)
     return deviceOut
 
 def compress(deviceOut):

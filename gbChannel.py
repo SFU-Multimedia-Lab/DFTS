@@ -26,7 +26,7 @@ class GBC(object):
                 return
             return
         else:
-            p = random.random()
+            p = random.gauss(0, 1)
             if p>self.pbg:
                 self.state = 1
                 return
@@ -36,7 +36,7 @@ def runChannelSim():
     lossProb = 0.05
     burstLength = 3
     p = GBC(lossProb, burstLength)
-    p.simulate(100)
+    p.simulate(1000)
 
 if __name__ == '__main__':
     runChannelSim()
