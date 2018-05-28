@@ -15,7 +15,7 @@ def compress(deviceOut):
     #initially identity function
     return deviceOut
 
-def transmit(compressOut, lossProb):
+def transmit(compressOut, lossProb, rowsPerPacket):
     #default packet length is one row of the feature map
     #put this in a different function
     packetLength = compressOut.shape[2]

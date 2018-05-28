@@ -61,7 +61,7 @@ def runSimulation():
     for l in lossList:
         deviceOut            = simmods.deviceSim(testModel.deviceModel, filenames, args['model'])
         compressOut          = simmods.compress(deviceOut)
-        channelOut, pLen, bS = simmods.transmit(compressOut, l) #second param is the packet loss prob
+        channelOut, pLen, bS = simmods.transmit(compressOut, l, 2) #second param is the packet loss prob
         # print(channelOut[2000])
         # print(testModel.remoteModel.summary())
         remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut, pLen, bS)
