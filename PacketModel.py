@@ -11,22 +11,16 @@ class Packet(object):
         self.packetSeq     = self.dataToPacket(data, rowsPerPacket)
 
     def dataToPacket(self, data, rowsPerPacket):
-        cols = data.shape[2]
         data = data.flatten()
-        pseq = []
-        #try to produce a cleaner version of the for loop
         i = 0
-        while True:
-            temp = data[i:rowsPerPacket*cols]
-            pseq.append(temp)
-            i   += rowsPerPacket*cols
-            if i>=data.shape[0]:
-                i -= rowsPerPacket*cols
-                break
-        temp = data[i:-1]
-        pseq.append(temp)
-        return np.array(pseq)
+        print(data.shape[0])
+        stepSize = rowsPerPacket*(self.cols)
+        data = np.split(data, [i for i in np.arange(0, data.shape[0], stepSize)])
+        np.delete(data, 0)
+        print("Packetization complete!!")
+        return np.array(data)
 
     def packetToData(self):
-        pd = np.array([item for sublist in self.packetSeq for item in self.packetSeq])
+        pd = np.concatenate(self.packetSeq)
+        print("Converted Packets back to data")
         return pd

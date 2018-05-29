@@ -61,10 +61,10 @@ def runSimulation():
     for l in lossList:
         deviceOut            = simmods.deviceSim(testModel.deviceModel, filenames, args['model'])
         compressOut          = simmods.compress(deviceOut)
-        channelOut, pLen, bS = simmods.transmit(compressOut, l, 2) #second param is the packet loss prob
+        channelOut           = simmods.transmit(compressOut, l, 1) #second param is the packet loss prob
         # print(channelOut[2000])
         # print(testModel.remoteModel.summary())
-        remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut, pLen, bS)
+        remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
 
         exec("from keras.applications."+model.lower()+" import decode_predictions", globals())
         # print(decode_predictions(remoteOut, top=1))
@@ -78,7 +78,8 @@ def runSimulation():
         lossData.append(temp)
         print(loss)
     lossData = np.array(lossData)
-    np.save('lossData.npy', lossData)
+    filename = args['layer'] + '_lossData1.npy'
+    np.save(filename, lossData)
     print("--- %s seconds ---" % (time.time() - start_time))
 
 if __name__ == '__main__':

@@ -1,5 +1,6 @@
 from utils import preprocess, randomChoice
 import numpy as np
+from PacketModel import Packet
 
 def deviceSim(model, testImagePath, modelName):
     '''
@@ -18,17 +19,19 @@ def compress(deviceOut):
 def transmit(compressOut, lossProb, rowsPerPacket):
     #default packet length is one row of the feature map
     #put this in a different function
-    packetLength = compressOut.shape[2]
-    batchSize    = compressOut.shape[0]
-    compressOut  = compressOut.flatten().reshape(-1, compressOut.shape[1])
+    pckts        = Packet(compressOut, rowsPerPacket)
     # print(compressOut[2000])
-    lossMatrix   = randomChoice(lossProb, compressOut.shape[0])
+    lossMatrix   = randomChoice(lossProb, pckts.packetSeq.shape[0])
     # print(lossMatrix)
-    return (compressOut*lossMatrix[:, None], packetLength, batchSize)
+    # pckts.packetSeq = (pckts.packetSeq)*lossMatrix[:, np.newaxis]
+    pckts.packetSeq = [pckts.packetSeq[i]*lossMatrix[i] for i in range(pckts.packetSeq.shape[0])]
+    print("Transmission Complete!!")
+    return pckts
 
-def remoteSim(remoteModel ,channelOut, pLen, bS):
-    x = channelOut.reshape(bS, pLen, pLen, -1)
+def remoteSim(remoteModel ,channelOut):
+    data = channelOut.packetToData()
+    x = np.reshape(data, (-1, channelOut.cols, channelOut.cols, channelOut.kernels))
 
     #assemble packets: create another function
-
+    print("Remote Simulation complete!!")
     return remoteModel.predict(x)
