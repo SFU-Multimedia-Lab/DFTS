@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 class Packet(object):
     """docstring for Packet."""
@@ -11,16 +12,20 @@ class Packet(object):
         self.packetSeq     = self.dataToPacket(data, rowsPerPacket)
 
     def dataToPacket(self, data, rowsPerPacket):
+        start_time = time.time()
         data = data.flatten()
         i = 0
-        print(data.shape[0])
+        # print(data.shape[0])
         stepSize = rowsPerPacket*(self.cols)
-        data = np.split(data, [i for i in np.arange(0, data.shape[0], stepSize)])
+        data = np.split(data, np.arange(0, data.shape[0], stepSize))
         np.delete(data, 0)
-        print("Packetization complete!!")
+        total_time = time.time() - start_time
+        print(f"Packetization complete in {total_time}!!")
         return np.array(data)
 
     def packetToData(self):
+        start_time = time.time()
         pd = np.concatenate(self.packetSeq)
-        print("Converted Packets back to data")
+        total_time = time.time() - start_time
+        print(f"Converted Packets back to data in {total_time}")
         return pd

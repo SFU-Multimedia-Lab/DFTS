@@ -59,26 +59,36 @@ def runSimulation():
     lossList = np.arange(0, 1, 0.05)
     lossData = []
     for l in lossList:
+        a = time.time()
         deviceOut            = simmods.deviceSim(testModel.deviceModel, filenames, args['model'])
         compressOut          = simmods.compress(deviceOut)
         channelOut           = simmods.transmit(compressOut, l, 1) #second param is the packet loss prob
         # print(channelOut[2000])
         # print(testModel.remoteModel.summary())
+        start_time = time.time()
         remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
+        total_time = time.time() - start_time
+        print(f"Remote Simulation complete in {total_time}!!")
 
-        exec("from keras.applications."+model.lower()+" import decode_predictions", globals())
+        start_time = time.time()
+        # exec("from keras.applications."+model.lower()+" import decode_predictions", globals())
         # print(decode_predictions(remoteOut, top=1))
         # y_pred = np.argmax(remoteOut, axis=1)
-        classValues = [784]*len(filenames) #push this to utils
+        classValues = np.full(len(filenames), 784)  #push this to utils
         # print(remoteOut[:, [784]])
         loss = np.mean(errorCalc(remoteOut, classValues))
         # accuracy = 1-loss
         # print(f"accuracy = {accuracy}")
         temp = np.array([l, loss])
         lossData.append(temp)
+        total_time = time.time() - start_time
         print(loss)
+        print(f"Time to calc error{total_time}")
+        t = time.time() - a
+        print(f"Time for one simulation {t}")
+        print("------------------------------")
     lossData = np.array(lossData)
-    filename = args['layer'] + '_lossData1.npy'
+    filename = args['layer'] + '_lossData5.npy'
     np.save(filename, lossData)
     print("--- %s seconds ---" % (time.time() - start_time))
 

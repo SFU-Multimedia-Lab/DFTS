@@ -32,9 +32,10 @@ def preprocess(testImage, model):
 def randomChoice(lossProb, lossSize):
     #more robust implementation refer to my TSP implementation
     lossMatrix = np.random.random(lossSize)
-    probMatrix = np.empty(lossSize)
-    probMatrix.fill(lossProb)
-    return np.less_equal(lossMatrix, probMatrix).astype('float32')
+    probMatrix = np.full(lossSize, lossProb)
+    # probMatrix = np.empty(lossSize)
+    # probMatrix.fill(lossProb)
+    return np.less_equal(lossMatrix, probMatrix).astype('float64')
 
 def oneHot(classValues, totalClasses):
     y_true = [[0]*totalClasses]*len(classValues)
