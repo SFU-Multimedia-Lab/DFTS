@@ -13,19 +13,24 @@ class Packet(object):
 
     def dataToPacket(self, data, rowsPerPacket):
         start_time = time.time()
-        data = data.flatten()
-        i = 0
-        # print(data.shape[0])
         stepSize = rowsPerPacket*(self.cols)
-        data = np.split(data, np.arange(0, data.shape[0], stepSize))
-        np.delete(data, 0)
+        if data.size%stepSize == 0:
+            data = data.ravel()
+            data = data.reshape(-1, stepSize)
+            self.numZeros = 0
+        else:
+            s = stepSize-(data.size%stepSize)
+            data = data.ravel()
+            data = np.append(data, np.zeros(s))
+            data = data.reshape(-1, stepSize)
+            self.numZeros = s
         total_time = time.time() - start_time
         print(f"Packetization complete in {total_time}!!")
-        return np.array(data)
+        return data
 
     def packetToData(self):
         start_time = time.time()
-        pd = np.concatenate(self.packetSeq)
+        pd = self.packetSeq.ravel()
         total_time = time.time() - start_time
         print(f"Converted Packets back to data in {total_time}")
         return pd
