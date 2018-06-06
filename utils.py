@@ -1,13 +1,15 @@
 from keras.preprocessing import image
-from keras import losses
+from keras import losses, metrics
 import keras.backend as K
 import numpy as np
 import importlib
 
 def errorCalc(remoteOut, classValues):
-    y_pred = K.variable(remoteOut)
-    y_true = K.variable((oneHot(classValues, 1000)))
-    return K.eval(losses.categorical_crossentropy(y_true, y_pred))
+    # print(remoteOut)
+    return np.sum(np.equal(remoteOut, classValues))/classValues.shape[0]
+    # y_pred = remoteOut
+    # y_true = classValues
+    # return metrics.categorical_accuracy(y_true, y_pred)
 
 
 def preprocess(testImage, model):

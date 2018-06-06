@@ -38,8 +38,14 @@ def transmit(compressOut, lossProb, rowsPerPacket):
     return pckts
 
 def remoteSim(remoteModel ,channelOut):
-    index = -1*channelOut.numZeros
-    data = channelOut.packetToData()
-    channelOut.packetSeq = channelOut.packetSeq[:index]
-    x = np.reshape(data, (channelOut.bS, channelOut.cols, channelOut.cols, channelOut.kernels))
-    return remoteModel.predict(x)
+    print(channelOut.numZeros)
+    if channelOut.numZeros ==0:
+        data = channelOut.packetToData()
+        x    = np.reshape(data, (channelOut.bS, channelOut.cols, channelOut.cols, channelOut.kernels))
+        return  remoteModel.predict(x)
+    else:
+        index = -1*channelOut.numZeros
+        data = channelOut.packetToData()
+        data = data[:index]
+        x = np.reshape(data, (channelOut.bS, channelOut.cols, channelOut.cols, channelOut.kernels))
+        return remoteModel.predict(x)

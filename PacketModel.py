@@ -9,9 +9,10 @@ class Packet(object):
         self.cols          = data.shape[2]
         self.kernels       = data.shape[-1]
         self.rowsPerPacket = rowsPerPacket
-        self.packetSeq     = self.dataToPacket(data, rowsPerPacket)
+        self.packetSeq, self.numZeros     = self.dataToPacket(data, rowsPerPacket)
 
     def dataToPacket(self, data, rowsPerPacket):
+        numZeros = 0
         start_time = time.time()
         stepSize = rowsPerPacket*(self.cols)
         if data.size%stepSize == 0:
@@ -23,10 +24,10 @@ class Packet(object):
             data = data.ravel()
             data = np.append(data, np.zeros(s))
             data = data.reshape(-1, stepSize)
-            self.numZeros = s
+            numZeros = s
         total_time = time.time() - start_time
         print(f"Packetization complete in {total_time}!!")
-        return data
+        return (data, numZeros)
 
     def packetToData(self):
         start_time = time.time()
