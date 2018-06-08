@@ -2,6 +2,7 @@ from utils import preprocess, randomChoice
 import numpy as np
 from PacketModel import Packet
 import time
+from plc import interpolation
 
 def deviceSim(model, testImagePath, modelName):
     '''
@@ -35,10 +36,17 @@ def transmit(compressOut, lossProb, rowsPerPacket):
     pckts.packetSeq[zeros_flags] = 0
     total_time = time.time() - start_time
     print(f"Transmission Complete in {total_time}!!")
-    return pckts
+    return (pckts, lossMatrix)
+
+def errorConceal(pBuffer, loss, plcKind):
+    #will change for tensor completion
+    plcMethod = plcKind[0].lower() #will help in importing different plc methods
+    kind      = plcKind[1].lower()
+    return interpolation.interpPackets(pBuffer, loss, kind)
+
 
 def remoteSim(remoteModel ,channelOut):
-    print(channelOut.numZeros)
+    # print(channelOut.numZeros)
     if channelOut.numZeros ==0:
         data = channelOut.packetToData()
         x    = np.reshape(data, (channelOut.bS, channelOut.cols, channelOut.cols, channelOut.kernels))

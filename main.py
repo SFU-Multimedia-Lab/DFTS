@@ -67,54 +67,60 @@ def runSimulation():
     packetList = np.arange(1, 6)
     num_epochs = 5
     dir = os.path.join('..', 'testData')
-    classValues = np.full(len(filenames), 235)  #push this to utils
-    for l in lossList:
-        for p in packetList:
-            lossData = []
-            for i in range(num_epochs):
-                print(f"Epoch:{i}")
-                a = time.time()
-                deviceOut            = simmods.deviceSim(testModel.deviceModel, filenames, args['model'])
-                compressOut          = simmods.compress(deviceOut)
-                channelOut           = simmods.transmit(compressOut, l, p) #second param is the packet loss prob
-                start_time = time.time()
-                remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
-                total_time = time.time() - start_time
-                print(f"Remote Simulation complete in {total_time}!!")
-                start_time = time.time()
-                predictions = np.argmax(remoteOut, axis=1)
-                loss = errorCalc(predictions, classValues)
-                temp = np.array([i, loss])
-                lossData.append(temp)
-                total_time = time.time() - start_time
-                print(loss)
-                print(f"Time to calc error{total_time}")
-                t = time.time() - a
-                print(f"Time for one simulation {t}")
-                print("------------------------------")
-            index = np.where(lossList==l)[0][0]
-            filename = f"{index}Loss"+f"{p}Packet_"+args['layer'] + '.npy'
-            lossData = np.array(lossData)
-            np.save(os.path.join(dir, filename), lossData)
-
-    # l = 0.7
-    # p = 4
-    # a = time.time()
-    # deviceOut            = simmods.deviceSim(testModel.deviceModel, filenames, args['model'])
-    # compressOut          = simmods.compress(deviceOut)
-    # channelOut           = simmods.transmit(compressOut, l, p) #second param is the packet loss prob
-    # start_time = time.time()
-    # remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
-    # total_time = time.time() - start_time
-    # print(f"Remote Simulation complete in {total_time}!!")
-    # start_time = time.time()
     # classValues = np.full(len(filenames), 235)  #push this to utils
-    # predictions = np.argmax(remoteOut, axis=1)
-    # loss = errorCalc(predictions, classValues)
-    # print(loss)
-    # t = time.time() - a
-    # print(f"Time for one simulation {t}")
-    # print("--- %s seconds ---" % (time.time() - start_time))
+    # for l in lossList:
+    #     for p in packetList:
+    #         lossData = []
+    #         for i in range(num_epochs):
+    #             print(f"Epoch:{i}")
+    #             a = time.time()
+    #             deviceOut            = simmods.deviceSim(testModel.deviceModel, filenames, args['model'])
+    #             compressOut          = simmods.compress(deviceOut)
+    #             channelOut           = simmods.transmit(compressOut, l, p) #second param is the packet loss prob
+    #             start_time = time.time()
+    #             remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
+    #             total_time = time.time() - start_time
+    #             print(f"Remote Simulation complete in {total_time}!!")
+    #             start_time = time.time()
+    #             predictions = np.argmax(remoteOut, axis=1)
+    #             loss = errorCalc(predictions, classValues)
+    #             temp = np.array([i, loss])
+    #             lossData.append(temp)
+    #             total_time = time.time() - start_time
+    #             print(loss)
+    #             print(f"Time to calc error{total_time}")
+    #             t = time.time() - a
+    #             print(f"Time for one simulation {t}")
+    #             print("------------------------------")
+    #         index = np.where(lossList==l)[0][0]
+    #         filename = f"{index}Loss"+f"{p}Packet_"+args['layer'] + '.npy'
+    #         lossData = np.array(lossData)
+    #         np.save(os.path.join(dir, filename), lossData)
+
+    l = 0.7
+    p = 3
+    a = time.time()
+    deviceOut                     = simmods.deviceSim(testModel.deviceModel, filenames, args['model'])
+    compressOut                   = simmods.compress(deviceOut)
+    channelOut, loss              = simmods.transmit(compressOut, l, p) #second param is the packet loss prob
+
+    # start_time = time.time()
+    # channelOut.packetSeq          = simmods.errorConceal(channelOut.packetSeq, loss, ['interpolation', 'linear'])
+    # total_time = time.time() - start_time
+    # print(f"Error concealment completed in {total_time}")
+
+    start_time = time.time()
+    remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
+    total_time = time.time() - start_time
+    print(f"Remote Simulation complete in {total_time}!!")
+    start_time = time.time()
+    classValues = np.full(len(filenames), 235)  #push this to utils
+    predictions = np.argmax(remoteOut, axis=1)
+    loss = errorCalc(predictions, classValues)
+    print(loss)
+    t = time.time() - a
+    print(f"Time for one simulation {t}")
+    print("--- %s seconds ---" % (time.time() - start_time))
 
 if __name__ == '__main__':
     runSimulation()
