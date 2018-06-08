@@ -6,8 +6,13 @@ from BrokenModel import BrokenModel as BM
 import sys
 import os
 import time
-import keras.backend as K
+import warnings
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", category=FutureWarning)
+    import h5py
+import keras
 
+# warnings.simplefilter(action='ignore', category=FutureWarning)
 
 #modify UI to accept configuration file
 #add a packet loss probability as well
