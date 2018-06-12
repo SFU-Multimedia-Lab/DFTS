@@ -2,7 +2,6 @@ from keras.preprocessing import image
 from keras import losses, metrics
 import keras.backend as K
 import numpy as np
-import importlib
 
 def errorCalc(remoteOut, classValues):
     # print(remoteOut)
@@ -44,3 +43,11 @@ def oneHot(classValues, totalClasses):
     for i in range(len(classValues)):
         y_true[i][classValues[i]] = 1
     return np.array(y_true)
+
+def closestPowerOfTwo(n):
+    nextNum = 1
+    if n and not(n & (n - 1)):
+        return n
+    while nextNum<n:
+        nextNum = nextNum<<1
+    return nextNum
