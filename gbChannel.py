@@ -6,7 +6,7 @@ class GBC(object):
         super(GBC, self).__init__()
         self.lp = lossProb #fixed initially
         self.bl = burstLength
-        self.state = 0 #initially bad channel state
+        self.state = 1 #initially bad channel state
         self.calcChannelProb()
 
     def calcChannelProb(self):
@@ -20,21 +20,21 @@ class GBC(object):
     def flip(self, state):
         print(f"{state}", end=" ")
         if state==1:
-            p = random.gauss(0, 1)
-            if p>self.pgb:
+            p = random.random()
+            if p<self.pgb:
                 self.state = 0
                 return
             return
         else:
-            p = random.gauss(0, 1)
-            if p>self.pbg:
+            p = random.random()
+            if p<self.pbg:
                 self.state = 1
                 return
             return
 
 def runChannelSim():
     lossProb = 0.05
-    burstLength = 3
+    burstLength = 20
     p = GBC(lossProb, burstLength)
     p.simulate(1000)
 

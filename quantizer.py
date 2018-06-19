@@ -12,12 +12,11 @@ class QLayer(object):
         start_time = time.time()
         self.max = np.max(data)
         self.min = np.min(data)
+        np.seterr(divide='ignore', invalid='ignore')
 
         #refer to deep feature compression for formulae
         # self.typeSize = 'uint'+str(cpt(self.nBits))
         self.quanData = np.round(((data-self.min)/(self.max-self.min))*((2**self.nBits)-1))#.astype(self.typeSize)
-        print(np.max(self.quanData))
-        print(self.max)
         total_time = time.time() - start_time
         print(f"bit quantizer complete in {total_time}!!")
 
