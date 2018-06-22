@@ -1,4 +1,5 @@
 import random
+import numpy as np
 
 class GBC(object):
     """docstring for GBC."""
@@ -8,6 +9,7 @@ class GBC(object):
         self.bl = burstLength
         self.state = 1 #initially bad channel state
         self.calcChannelProb()
+        self.lossMatrix = []
 
     def calcChannelProb(self):
         self.pbg = 1.0/self.bl
@@ -16,9 +18,11 @@ class GBC(object):
     def simulate(self, nofSims):
         for i in range(nofSims):
             self.flip(self.state)
+        return np.array(self.lossMatrix)
 
     def flip(self, state):
-        print(f"{state}", end=" ")
+        # print(f"{state}", end=" ")
+        self.lossMatrix.append(state)
         if state==1:
             p = random.random()
             if p<self.pgb:
