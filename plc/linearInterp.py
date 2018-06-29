@@ -59,8 +59,14 @@ def createNeighDict(rP, lP, b, c):
     #rP: received packet indices of (b, c)
     #lP: lost packet indices of (b, c)
     #b,c: batch, channel
+
+
     insertPos = np.searchsorted(rP, lP)
     neighDict = collections.OrderedDict()
+
+    if len(rP)==0:
+        return neighDict
+
     for i in range(len(lP)):
         ind = insertPos[i] #position at which lP is to be inserted in rP
         if ind==0: #check if insert position is at beginning i.e no top neighbour
@@ -129,7 +135,7 @@ def interpCoeff(neighBours, rowsPerPacket, tensorShape):
             coeff.append(np.vstack((aVec, bVec)))
             # print(np.vstack((aVec, bVec)).shape)
         else:
-            aVec = np.arange(1, (y[1]-x[1]-1)*rowsPerPacket + 1)/(((y[1]-x[1])*rowsPerPacket)+1)
+            aVec = np.arange(1, (y[1]-x[1]-1)*rowsPerPacket + 1)/(((y[1]-x[1]-1)*rowsPerPacket+1))
             bVec = 1-aVec
             coeff.append(np.vstack((aVec, bVec)))
             # print(np.vstack((aVec, bVec)).shape)

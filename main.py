@@ -12,6 +12,7 @@ with warnings.catch_warnings():
     import h5py
 import keras
 from quantizer import QLayer as QL
+import copy
 
 # warnings.simplefilter(action='ignore', category=FutureWarning)
 
@@ -69,57 +70,57 @@ def runSimulation():
 
     # packetList = np.arange(1, 6)
 
-    # lossList = np.array([0.3, 0.5])
-    # packetList  = [8]
-    # burstLength = np.arange(1, 6, 1)
-    # num_epochs = 5
-    # dir = os.path.join('..', 'testData')
-    # dir = os.path.join(dir, 'gilbert')
-    # classValues = np.full(len(filenames), 235)  #push this to utils
-    # for l in lossList:
-    #     for bl in burstLength:
-    #         lossData = []
-    #         for i in range(num_epochs):
-    #             print(f"Epoch:{i}")
-    #             a = time.time()
-    #             deviceOut            = simmods.deviceSim(testModel.deviceModel, filenames, args['model'])
-    #             compressOut          = simmods.compress(deviceOut)
-    #             channelOut,loss      = simmods.transmit(compressOut, l, 8, bl) #second param is the packet loss prob
-    #
-    #             # start_time = time.time()
-    #             # channelOut.packetSeq          = simmods.errorConceal(channelOut.packetSeq, loss, ['interpolation', 'linear'])
-    #             # total_time = time.time() - start_time
-    #             # print(f"Error concealment completed in {total_time}")
-    #
-    #             # nBits = 2
-    #             # qnt = QL(nBits)
-    #             # qnt.bitQuantizer(channelOut.packetSeq)
-    #             # channelOut.packetSeq = qnt.inverseQuantizer()
-    #
-    #             '''
-    #                 Multiprocessing to speed up the non gpu implementations
-    #             '''
-    #
-    #
-    #             start_time = time.time()
-    #             remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
-    #             total_time = time.time() - start_time
-    #             print(f"Remote Simulation complete in {total_time}!!")
-    #             start_time = time.time()
-    #             predictions = np.argmax(remoteOut, axis=1)
-    #             loss = errorCalc(predictions, classValues)
-    #             temp = np.array([i, loss])
-    #             lossData.append(temp)
-    #             total_time = time.time() - start_time
-    #             print(loss)
-    #             print(f"Time to calc error{total_time}")
-    #             t = time.time() - a
-    #             print(f"Time for one simulation {t}")
-    #             print("------------------------------")
-    #         # index =
-    #         filename = f"{l}Loss_{bl}BurstLength"+str(8)+"Packet_"+args['layer'] + '.npy'
-    #         lossData = np.array(lossData)
-    #         np.save(os.path.join(dir, filename), lossData)
+    lossList = np.array([0.1, 0.3, 0.5])
+    packetList  = [8]
+    burstLength = np.arange(1, 6, 1)
+    num_epochs = 50
+    dir = os.path.join('..', 'testData')
+    dir = os.path.join(dir, 'errorConceal')
+    classValues = np.full(len(filenames), 235)  #push this to utils
+    for l in lossList:
+        for bl in burstLength:
+            lossData = []
+            for i in range(num_epochs):
+                print(f"Epoch:{i}")
+                a = time.time()
+                deviceOut            = simmods.deviceSim(testModel.deviceModel, filenames, args['model'])
+                compressOut          = simmods.compress(deviceOut)
+                channelOut,loss, receivedIndices, lostIndices      = simmods.transmit(compressOut, l, 8, bl) #second param is the packet loss prob
+
+                # start_time = time.time()
+                # channelOut.packetSeq          = simmods.errorConceal(channelOut.packetSeq, receivedIndices, lostIndices, 8, ['interpolation', 'linear'])
+                # total_time = time.time() - start_time
+                # print(f"Error concealment completed in {total_time}")
+
+                # nBits = 2
+                # qnt = QL(nBits)
+                # qnt.bitQuantizer(channelOut.packetSeq)
+                # channelOut.packetSeq = qnt.inverseQuantizer()
+
+                '''
+                    Multiprocessing to speed up the non gpu implementations
+                '''
+
+
+                start_time = time.time()
+                remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
+                total_time = time.time() - start_time
+                print(f"Remote Simulation complete in {total_time}!!")
+                start_time = time.time()
+                predictions = np.argmax(remoteOut, axis=1)
+                loss = errorCalc(predictions, classValues)
+                temp = np.array([i, loss])
+                lossData.append(temp)
+                total_time = time.time() - start_time
+                print(loss)
+                print(f"Time to calc error{total_time}")
+                t = time.time() - a
+                print(f"Time for one simulation {t}")
+                print("------------------------------")
+            # index =
+            filename = f"{l}Loss_{bl}BurstLength"+str(8)+"Packet_"+args['layer'] + '.npy'
+            lossData = np.array(lossData)
+            np.save(os.path.join(dir, filename), lossData)
 
     # below code can be used for quantization with diff bits and also loss and packet configs
 
@@ -175,38 +176,56 @@ def runSimulation():
     #             lossData = np.array(lossData)
     #             np.save(os.path.join(dir, filename), lossData)
 
-    l = 0.01
-    p = 1
-    bl = 1
-    a = time.time()
-    deviceOut                     = simmods.deviceSim(testModel.deviceModel, filenames, args['model'])
-    compressOut                   = simmods.compress(deviceOut)
-    channelOut, loss, receivedIndices, lostIndices              = simmods.transmit(compressOut, l, p, bl) #second param is the packet loss prob
-
-    start_time = time.time()
-    channelOut.packetSeq          = simmods.errorConceal(channelOut.packetSeq, receivedIndices, lostIndices, p, ['interpolation', 'linear'])
-    total_time = time.time() - start_time
-    print(f"Error concealment completed in {total_time}")
-
+    # l = 0.1
+    # p = 8
+    # bl = 1
+    # a = time.time()
+    # deviceOut                     = simmods.deviceSim(testModel.deviceModel, filenames, args['model'])
+    # compressOut                   = simmods.compress(deviceOut)
+    # channelOut, loss, receivedIndices, lostIndices              = simmods.transmit(compressOut, l, p, bl) #second param is the packet loss prob
+    #
+    # # packetSeq = channelOut.packetSeq
+    # dummyOut = copy.deepcopy(channelOut)
+    # dummydata = dummyOut.packetToData()
+    # # channelOut.packetSeq = packetSeq
+    #
     # start_time = time.time()
-    # qnt = QL(8)
-    # qnt.bitQuantizer(channelOut.packetSeq)
-    # channelOut.packetSeq = qnt.inverseQuantizer()
+    # channelOut.packetSeq          = simmods.errorConceal(channelOut.packetSeq, receivedIndices, lostIndices, p, ['interpolation', 'linear'])
     # total_time = time.time() - start_time
-    # print(f"Quantization complete in {total_time}!!")
-
-    start_time = time.time()
-    remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
-    total_time = time.time() - start_time
-    print(f"Remote Simulation complete in {total_time}!!")
-    start_time = time.time()
-    classValues = np.full(len(filenames), 235)  #push this to utils
-    predictions = np.argmax(remoteOut, axis=1)
-    loss = errorCalc(predictions, classValues)
-    print(loss)
-    t = time.time() - a
-    print(f"Time for one simulation {t}")
-    print("--- %s seconds ---" % (time.time() - start_time))
+    # print(f"Error concealment completed in {total_time}")
+    #
+    # # start_time = time.time()
+    # # qnt = QL(8)
+    # # qnt.bitQuantizer(channelOut.packetSeq)
+    # # channelOut.packetSeq = qnt.inverseQuantizer()
+    # # total_time = time.time() - start_time
+    # # print(f"Quantization complete in {total_time}!!")
+    #
+    # start_time = time.time()
+    # data, remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
+    #
+    # print(np.all(dummydata==data))
+    #
+    # visDir = 'C:\\Users\\hunnibha\\projectStuff\\code\\testData\\vis'
+    #
+    # fileName  = os.path.join(visDir, f'{l}loss_{bl}Burst_{p}packet_'+args['layer']+'EC.npy')
+    # noEcFile = os.path.join(visDir, f'{l}loss_{bl}Burst_{p}packet_'+args['layer']+'.npy')
+    # lostFileName = os.path.join(visDir, f'{l}loss_{bl}Burst_{p}packet_'+args['layer']+'loss.npy')
+    # #
+    # np.save(fileName, data)
+    # np.save(lostFileName, lostIndices)
+    # np.save(noEcFile, dummydata)
+    #
+    # total_time = time.time() - start_time
+    # print(f"Remote Simulation complete in {total_time}!!")
+    # start_time = time.time()
+    # classValues = np.full(len(filenames), 235)  #push this to utils
+    # predictions = np.argmax(remoteOut, axis=1)
+    # loss = errorCalc(predictions, classValues)
+    # print(loss)
+    # t = time.time() - a
+    # print(f"Time for one simulation {t}")
+    # print("--- %s seconds ---" % (time.time() - start_time))
 
     #test for quantization
     # quantList = np.arange(2, 14, 2)

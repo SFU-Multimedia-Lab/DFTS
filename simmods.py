@@ -55,8 +55,6 @@ def transmit(compressOut, lossProb, rowsPerPacket, burstLength):
 
     total_time = time.time() - start_time
     print(f"Transmission Complete in {total_time}!!")
-    print(receivedIndices.shape)
-    print(lostIndices.shape)
     return (pckts, lossMatrix, receivedIndices, lostIndices)
 
 def errorConceal(pBuffer, receivedIndices, lostIndices, rowsPerPacket, plcKind):
