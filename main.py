@@ -2,6 +2,7 @@ import argparse
 import re
 import yaml
 from spimulation.testConfig import runSimulation
+from download.utils import downloadModel
 
 class ParserError(Exception):
     def __init__(self, message, errors):
@@ -57,7 +58,10 @@ def userInterface():
         config = yaml.load(c)
     paramsDict = configSettings(config)
 
-    #create decorators for classification, segmentation and other tasks
+    model = paramsDict['Model']['kerasModel']
+
+    if isURL(model):
+        model = downloadModel(model)
 
 
 

@@ -14,7 +14,8 @@ def pTasks(image, reshapeDims, norm):
     I = np.asarray(I)
 
     if norm:
-        return normalize(I)
+        I = normalize(I)
+    return I
 
 def normalize(image):
     #currently norm accross each channel separately
