@@ -13,8 +13,16 @@ class DataGenerator(object):
         self.batch_index = 0
 
     def getNextBatch(self):
-        currentTestData  = self.preprocess(self.testData[index:index+self.batch_size])
-        self.index      += self.batch_size
+        if self.batch_index>=len(self.testData):
+            #assume that batch_size<number of test images
+            self.batch_index = 0
+            currentTestData  = self.preprocess(self.testData[self.batch_index:self.batch_index+self.batch_size])
+        elif self.batch_index + self.batch_size >= len(self.testData) and self.batch_index<len(self.testData):
+            currentTestData  = self.preprocess(self.testData[self.batch_index:])
+        else:
+            currentTestData  = self.preprocess(self.testData[self.batch_index:self.batch_index+self.batch_size])
+
+        self.batch_index      += self.batch_size
         return currentTestData
 
     def preprocess(self, pdata):
