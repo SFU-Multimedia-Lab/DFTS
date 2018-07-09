@@ -1,6 +1,8 @@
 import argparse
 import re
 import yaml
+import sys
+from talloc import taskAllocater
 from spimulation.testConfig import runSimulation
 from download.utils import downloadModel
 
@@ -58,11 +60,28 @@ def userInterface():
         config = yaml.load(c)
     paramsDict = configSettings(config)
 
-    model = paramsDict['Model']['kerasModel']
+    model = paramsDict['Model']['kerasmodel']
 
     if isURL(model):
         model = downloadModel(model)
+    else:
+        modelDict = {'xception':'Xception', 'vgg16':'VGG16', 'VGG19':'VGG19', 'resnet50':'ResNet50',
+                     'inceptionv3':'InceptionV3', 'inceptionresnetv2':'InceptionResnetV2',
+                     'mobilenet':'MobileNet', 'densenet':'DenseNet','nasnet':'NASNet'}
+        model = modelDict[model.lower()]
+    else:
+        print('Unable to load the given model!')
+        sys.exit(0)
 
+    task = paramDict['Task']['value']
+
+    task = taskAllocater(task, paramsDict['TestInput']['testdir'],
+                        paramsDict['PreProcess']['reshapeDims'],
+                        paramsDict['PreProcess']['batch_size'],
+                        paramsDict['PreProcess']['normalize'])
+
+    splitLayer = paramsDict['SplitLayer']['split']
+    transDict  = paramsDict['Transmission']
 
 
 if __name__ == "__main__":
