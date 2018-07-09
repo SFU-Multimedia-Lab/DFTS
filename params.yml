@@ -5,8 +5,11 @@ Task:
 #location of the test images
 TestInput:
   testdir: C:\Users\hunnibha\projectStuff\code\test\images\largeTest #each folder's name must be the corresponding class number, containing all the images of that class only
-  # preprocessing:
-  #
+
+PreProcess:
+  reshapeDims: (224, 224)
+  batch_size: 64
+  normalize: True
 
 #official keras model or link to a model compiled in keras
 Model:
