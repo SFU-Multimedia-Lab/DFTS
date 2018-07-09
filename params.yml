@@ -1,0 +1,35 @@
+#represents the task such as classification, segmentation etc
+Task:
+  value: 0
+
+#location of the test images
+TestInput:
+  testdir: C:\Users\hunnibha\projectStuff\code\test\images\largeTest #each folder's name must be the corresponding class number, containing all the images of that class only
+  # preprocessing:
+  #
+
+#official keras model or link to a model compiled in keras
+Model:
+  kerasmodel: vgg16
+
+#one of the keras layer names
+SplitLayer:
+  split: block3_pool
+
+#transmission parameters
+Transmission:
+  rowsperpacket: 8 #packetization parameter
+  quantization:
+    numberOfBits: 8
+    include: True
+  channel: #type of channel
+    RandomLossChannel:
+      receptionProbability: 1
+      include: False
+    GilbertChannel:
+      lossProbability: 0.01
+      burstLength: 2
+      include: True
+  concealment: #type of error concealment
+    Linear:
+      include: True
