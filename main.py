@@ -1,272 +1,65 @@
 import argparse
-import numpy as np
-import simmods
-from utils import errorCalc
-from BrokenModel import BrokenModel as BM
-import sys
-import os
-import time
-import warnings
-with warnings.catch_warnings():
-    warnings.filterwarnings("ignore", category=FutureWarning)
-    import h5py
-import keras
-from quantizer import QLayer as QL
-import copy
+import re
+import yaml
+from spimulation.testConfig import runSimulation
 
-# warnings.simplefilter(action='ignore', category=FutureWarning)
+class ParserError(Exception):
+    def __init__(self, message, errors):
+        super().__init__(message)
+        self.errors = errors
 
-#modify UI to accept configuration file
-#add a packet loss probability as well
+def isURL(s):
+    #check if given string is url or not
+    url = re.compile("""http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\), ]|
+                        (?:%[0-9a-fA-F][0-9a-fA-F]))+""")
+    return bool(url.match(s))
 
-def argumentReader():
-    '''
-        * Read in command line arguments
-            ** m: model such as those given at https://keras.io/applications/
-            ** l: layer you want to split your model at
-            ** i: path to the image/s
-    '''
-    ap = argparse.ArgumentParser()
-    ap.add_argument("-m", "--model", help="name of the model", required=True)
-    ap.add_argument("-l", "--layer", help="layer you want to split at", required=True)
-    ap.add_argument("-i", "--image", help="path to the image", required=True)
-    args = vars(ap.parse_args())
-    return args
+def selectParamConfig(p, paramDict):
+    sum = 0
+    index = 0
 
-def runSimulation():
-    '''
-        * Part of the model runs on the device: deviceSim
-        * Compression: compress
-        * Channel: transmit
-        * Other Part runs in the cloud: remoteSim
-    '''
-    t1 = time.time()
-    args = argumentReader()
-
-    modelDict = {'xception':'Xception', 'vgg16':'VGG16', 'VGG19':'VGG19', 'resnet50':'ResNet50',
-                 'inceptionv3':'InceptionV3', 'inceptionresnetv2':'InceptionResnetV2',
-                 'mobilenet':'MobileNet', 'densenet':'DenseNet','nasnet':'NASNet'}
-
+    for i in paramDict:
+        sum += paramDict[i]['include']
+        if paramDict[i]['include']:
+            index = i
     try:
-        model = modelDict[args['model'].lower()]
-    except KeyError:
-        print("We currently do not support that model. Please try a valid one.")
-        sys.exit(1)
-
-    testModel = BM(model, args['layer'])
-    testModel.splitModel()
-    tot = time.time() - t1
-    print(f"Time to split model {tot}")
-    # print(testModel.deviceModel.summary())
-
-    filenames = []
-    if os.path.isdir(args['image']):
-        filenames = os.listdir(args['image'])
-        filenames = [os.path.join(args['image'], i) for i in filenames]
+        if sum>1:
+            raise ParserError(f"Multiple configurations selected for {p}", sum)
+    except Exception as e:
+        raise
     else:
-        filenames.append(args['image'])
+        if sum==0:
+            return (index, False)
+        else:
+            return (index, paramDict[index])
 
-    # lossList = np.arange(0.2, 1.2, 0.2)
-
-    # packetList = np.arange(1, 6)
-
-    lossList = np.array([0.1, 0.3, 0.5])
-    packetList  = [8]
-    burstLength = np.arange(1, 6, 1)
-    num_epochs = 50
-    dir = os.path.join('..', 'testData')
-    dir = os.path.join(dir, 'errorConceal')
-    classValues = np.full(len(filenames), 235)  #push this to utils
-    for l in lossList:
-        for bl in burstLength:
-            lossData = []
-            for i in range(num_epochs):
-                print(f"Epoch:{i}")
-                a = time.time()
-                deviceOut            = simmods.deviceSim(testModel.deviceModel, filenames, args['model'])
-                compressOut          = simmods.compress(deviceOut)
-                channelOut,loss, receivedIndices, lostIndices      = simmods.transmit(compressOut, l, 8, bl) #second param is the packet loss prob
-
-                # start_time = time.time()
-                # channelOut.packetSeq          = simmods.errorConceal(channelOut.packetSeq, receivedIndices, lostIndices, 8, ['interpolation', 'linear'])
-                # total_time = time.time() - start_time
-                # print(f"Error concealment completed in {total_time}")
-
-                # nBits = 2
-                # qnt = QL(nBits)
-                # qnt.bitQuantizer(channelOut.packetSeq)
-                # channelOut.packetSeq = qnt.inverseQuantizer()
-
-                '''
-                    Multiprocessing to speed up the non gpu implementations
-                '''
+def configSettings(config):
+    for i in config:
+        if i=='Transmission':
+            for j in config[i]:
+                transDict = {}
+                if j=='channel' or j=='concealment':
+                    index, temp = selectParamConfig(j, config[i][j])
+                    transDict[index] = temp
+                    config[i][j] = transDict
+    return config
 
 
-                start_time = time.time()
-                remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
-                total_time = time.time() - start_time
-                print(f"Remote Simulation complete in {total_time}!!")
-                start_time = time.time()
-                predictions = np.argmax(remoteOut, axis=1)
-                loss = errorCalc(predictions, classValues)
-                temp = np.array([i, loss])
-                lossData.append(temp)
-                total_time = time.time() - start_time
-                print(loss)
-                print(f"Time to calc error{total_time}")
-                t = time.time() - a
-                print(f"Time for one simulation {t}")
-                print("------------------------------")
-            # index =
-            filename = f"{l}Loss_{bl}BurstLength"+str(8)+"Packet_"+args['layer'] + '.npy'
-            lossData = np.array(lossData)
-            np.save(os.path.join(dir, filename), lossData)
+def userInterface():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-p", "--params", help="path to the config file containing parameters", required=True)
 
-    # below code can be used for quantization with diff bits and also loss and packet configs
+    args = vars(ap.parse_args())
 
-    # num_epochs = 5
-    # dir = os.path.join('..', 'quanTestData')
-    # classValues = np.full(len(filenames), 235)
-    # lossList = np.array([1])
-    # packetList = np.array([1])
-    # quantList = np.arange(2, 14, 2)
-    # for l in lossList:
-    #     for p in packetList:
-    #         for q in quantList:
-    #             lossData = []
-    #             nBits = q
-    #             qnt = QL(nBits)
-    #             for i in range(num_epochs):
-    #                 print(f"Epoch:{i}")
-    #                 a = time.time()
-    #                 deviceOut            = simmods.deviceSim(testModel.deviceModel, filenames, args['model'])
-    #                 compressOut          = simmods.compress(deviceOut)
-    #                 channelOut,loss      = simmods.transmit(compressOut, l, p) #second param is the packet loss prob
-    #
-    #                 # start_time = time.time()
-    #                 # channelOut.packetSeq          = simmods.errorConceal(channelOut.packetSeq, loss, ['interpolation', 'linear'])
-    #                 # total_time = time.time() - start_time
-    #                 # print(f"Error concealment completed in {total_time}")
-    #
-    #                 qnt.bitQuantizer(channelOut.packetSeq)
-    #                 channelOut.packetSeq = qnt.inverseQuantizer()
-    #
-    #                 '''
-    #                     Multiprocessing to speed up the non gpu implementations
-    #                 '''
-    #
-    #
-    #                 start_time = time.time()
-    #                 remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
-    #                 total_time = time.time() - start_time
-    #                 print(f"Remote Simulation complete in {total_time}!!")
-    #                 start_time = time.time()
-    #                 predictions = np.argmax(remoteOut, axis=1)
-    #                 loss = errorCalc(predictions, classValues)
-    #                 temp = np.array([i, loss])
-    #                 lossData.append(temp)
-    #                 total_time = time.time() - start_time
-    #                 print(loss)
-    #                 print(f"Time to calc error{total_time}")
-    #                 t = time.time() - a
-    #                 print(f"Time for one simulation {t}")
-    #                 print("------------------------------")
-    #             index = 0
-    #             filename = f"{index}Loss_{q}Quantization"+f"{p}Packet_"+args['layer'] + '.npy'
-    #             lossData = np.array(lossData)
-    #             np.save(os.path.join(dir, filename), lossData)
+    fileName = args['params']
 
-    # l = 0.1
-    # p = 8
-    # bl = 1
-    # a = time.time()
-    # deviceOut                     = simmods.deviceSim(testModel.deviceModel, filenames, args['model'])
-    # compressOut                   = simmods.compress(deviceOut)
-    # channelOut, loss, receivedIndices, lostIndices              = simmods.transmit(compressOut, l, p, bl) #second param is the packet loss prob
-    #
-    # # packetSeq = channelOut.packetSeq
-    # dummyOut = copy.deepcopy(channelOut)
-    # dummydata = dummyOut.packetToData()
-    # # channelOut.packetSeq = packetSeq
-    #
-    # start_time = time.time()
-    # channelOut.packetSeq          = simmods.errorConceal(channelOut.packetSeq, receivedIndices, lostIndices, p, ['interpolation', 'linear'])
-    # total_time = time.time() - start_time
-    # print(f"Error concealment completed in {total_time}")
-    #
-    # # start_time = time.time()
-    # # qnt = QL(8)
-    # # qnt.bitQuantizer(channelOut.packetSeq)
-    # # channelOut.packetSeq = qnt.inverseQuantizer()
-    # # total_time = time.time() - start_time
-    # # print(f"Quantization complete in {total_time}!!")
-    #
-    # start_time = time.time()
-    # data, remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
-    #
-    # print(np.all(dummydata==data))
-    #
-    # visDir = 'C:\\Users\\hunnibha\\projectStuff\\code\\testData\\vis'
-    #
-    # fileName  = os.path.join(visDir, f'{l}loss_{bl}Burst_{p}packet_'+args['layer']+'EC.npy')
-    # noEcFile = os.path.join(visDir, f'{l}loss_{bl}Burst_{p}packet_'+args['layer']+'.npy')
-    # lostFileName = os.path.join(visDir, f'{l}loss_{bl}Burst_{p}packet_'+args['layer']+'loss.npy')
-    # #
-    # np.save(fileName, data)
-    # np.save(lostFileName, lostIndices)
-    # np.save(noEcFile, dummydata)
-    #
-    # total_time = time.time() - start_time
-    # print(f"Remote Simulation complete in {total_time}!!")
-    # start_time = time.time()
-    # classValues = np.full(len(filenames), 235)  #push this to utils
-    # predictions = np.argmax(remoteOut, axis=1)
-    # loss = errorCalc(predictions, classValues)
-    # print(loss)
-    # t = time.time() - a
-    # print(f"Time for one simulation {t}")
-    # print("--- %s seconds ---" % (time.time() - start_time))
+    with open(fileName) as c:
+        config = yaml.load(c)
+    paramsDict = configSettings(config)
 
-    #test for quantization
-    # quantList = np.arange(2, 14, 2)
-    # labels    = args['image']
-    #
-    # images      = np.load(labels)
-    # classValues = images[:, 0]
-    # imagePaths  = images[:, 1]
-    #
-    # l=1
-    # p=1
-    #
-    # quanData = []
-    #
-    # for q in quantList:
-    #     a = time.time()
-    #     deviceOut            = simmods.deviceSim(testModel.deviceModel, imagePaths, args['model'])
-    #     compressOut          = simmods.compress(deviceOut)
-    #     channelOut,loss      = simmods.transmit(compressOut, l, p)
-    #
-    #     start_time = time.time()
-    #     qnt = QL(q)
-    #     qnt.bitQuantizer(channelOut.packetSeq)
-    #     channelOut.packetSeq = qnt.inverseQuantizer()
-    #     total_time = time.time() - start_time
-    #     print(f"Quantization complete in {total_time}!!")
-    #
-    #     start_time = time.time()
-    #     remoteOut            = simmods.remoteSim(testModel.remoteModel, channelOut)
-    #     total_time = time.time() - start_time
-    #     print(f"Remote Simulation complete in {total_time}!!")
-    #
-    #     predictions = np.argmax(remoteOut, axis=1)
-    #     loss = errorCalc(predictions, classValues)
-    #     print(loss)
-    #     print(f"Time for one simulation {t}")
-    #
-    #     a = np.array(list((q, loss)))
-    #     quanData.append(a)
-    # filename = args['layer'] + '.npy'
-    # np.save(os.path.join(dir, filename), quanData)
+    #create decorators for classification, segmentation and other tasks
 
-if __name__ == '__main__':
-    runSimulation()
+
+
+if __name__ == "__main__":
+    userInterface()
