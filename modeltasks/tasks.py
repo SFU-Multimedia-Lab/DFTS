@@ -1,6 +1,7 @@
 import os
-from utils import absoluteFilePaths
-from dataGen import DataGenerator as DG
+import numpy as np
+from .utils import absoluteFilePaths
+from .dataGen import DataGenerator as DG
 
 class CFTask(object):
     """docstring for CFTask."""
@@ -15,12 +16,13 @@ class CFTask(object):
     def gatherData(self):
         dirList = os.listdir(self.testDir)
         self.numClasses = len(dirList)
-        data    = [absoluteFilePaths(i) for i in dirList]
+        dirList = [os.path.join(self.testDir, i) for i in dirList]
+        images  = [absoluteFilePaths(i) for i in dirList]
 
         classImgArr = []
 
         for i in range(len(images)):
-            exp = [list((int(dirList[i]), images[i][j])) for j in range(len(images[i]))]
+            exp = [list((int(dirList[i].split('\\')[-1]), images[i][j])) for j in range(len(images[i]))]
             classImgArr.append(exp)
 
         classImgArr = np.array([item for sublist in classImgArr for item in sublist])

@@ -2,6 +2,7 @@ import argparse
 import re
 import yaml
 import sys
+import os
 from talloc import taskAllocater
 from spimulation.testConfig import runSimulation
 from download.utils import downloadModel
@@ -61,19 +62,19 @@ def userInterface():
     paramsDict = configSettings(config)
 
     model = paramsDict['Model']['kerasmodel']
+    modelDict = {'xception':'Xception', 'vgg16':'VGG16', 'VGG19':'VGG19', 'resnet50':'ResNet50',
+                 'inceptionv3':'InceptionV3', 'inceptionresnetv2':'InceptionResnetV2',
+                 'mobilenet':'MobileNet', 'densenet':'DenseNet','nasnet':'NASNet'}
 
     if isURL(model):
         model = downloadModel(model)
-    else:
-        modelDict = {'xception':'Xception', 'vgg16':'VGG16', 'VGG19':'VGG19', 'resnet50':'ResNet50',
-                     'inceptionv3':'InceptionV3', 'inceptionresnetv2':'InceptionResnetV2',
-                     'mobilenet':'MobileNet', 'densenet':'DenseNet','nasnet':'NASNet'}
+    elif model.lower() in modelDict:
         model = modelDict[model.lower()]
     else:
         print('Unable to load the given model!')
         sys.exit(0)
 
-    task = paramDict['Task']['value']
+    task = paramsDict['Task']['value']
 
     task = taskAllocater(task, paramsDict['TestInput']['testdir'],
                         paramsDict['PreProcess']['reshapeDims'],
@@ -82,6 +83,8 @@ def userInterface():
 
     splitLayer = paramsDict['SplitLayer']['split']
     transDict  = paramsDict['Transmission']
+
+    runSimulation(model, splitLayer, task, modelDict, transDict)
 
 
 if __name__ == "__main__":

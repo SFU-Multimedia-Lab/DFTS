@@ -2,7 +2,8 @@ from utils import preprocess, randomChoice
 import numpy as np
 # from PacketModel import Packet
 import time
-from plc.linearInterp import interpPackets
+# from plc.linearInterp import interpPackets
+from plc.nearestNeighbours import NNInterp as interpPackets
 from gbChannel import GBC
 
 from models.packetModel import PacketModel as PM
@@ -66,4 +67,4 @@ def errorConceal(pBuffer, receivedIndices, lostIndices, rowsPerPacket, plcKind):
 
 def remoteSim(remoteModel ,channelOut):
     data = channelOut.packetToData()
-    return remoteModel.predict(data)
+    return data, remoteModel.predict(data)

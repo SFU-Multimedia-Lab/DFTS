@@ -5,11 +5,9 @@ import numpy as np
 
 class BrokenModel(object):
     """docstring for BrokenModel."""
-    def __init__(self, modelName, splitLayer):
+    def __init__(self, model, splitLayer):
         super(BrokenModel, self).__init__()
-        self.modelName  = modelName
-        #modify below function to suit different models
-        self.model      = getattr(keras.applications,f"{modelName}")(weights='imagenet', classes=1000)
+        self.model      = model
         self.layers     = [i.name for i in self.model.layers]
         self.splitLayer = splitLayer
         self.layerLoc   = self.layers.index(self.splitLayer)

@@ -1,60 +1,50 @@
 import numpy as np
 import collections
 
-def interpPackets(tensor, receivedIndices, lostIndices, rowsPerPacket):
+def NNInterp(tensor, receivedIndices, lostIndices, rowsPerPacket):
     nearestNeighDict   = nearestNeighbours(receivedIndices, lostIndices, tensor.shape)
-    coeff              = interpCoeff(nearestNeighDict, rowsPerPacket, tensor.shape)
 
-    j = 0
     for i in nearestNeighDict:
-        #i is the neighbours
-        x,y = i
+        x, y = i
         if len(nearestNeighDict[i].shape) == 1:
-            #only one lost packet between the neighbours
             pck = nearestNeighDict[i][1]
-            if y[1]==0: #packets lost at the end
-                lowerNeigh = tensor[y[0], y[1], 0, :, y[2]]
+            if y[1]==0:
                 upperNeigh = tensor[x[0], x[1], -1, :, x[2]]
-                tensor[x[0], pck:, :, :, x[2]] =(np.outer(coeff[j][0], lowerNeigh)
-                                                +np.outer(coeff[j][1], upperNeigh)).reshape(tensor[x[0], pck:, :, :, x[2]].shape)
-                j = j+1
+                tensor[x[0], pck, :, :, x[2]] = (np.outer(np.ones(rowsPerPacket), upperNeigh)).reshape(tensor[x[0], pck, :, :, x[2]].shape)
                 continue
-            if x[1]==-1: #packets lost in the beginning
+            if x[1]==-1:
                 lowerNeigh = tensor[y[0], y[1], 0, :, y[2]]
-                upperNeigh = tensor[x[0], x[1], -1, :, x[2]]
-                tensor[x[0], :pck+1, :, :, x[2]] =(np.outer(coeff[j][0], lowerNeigh)
-                                                +np.outer(coeff[j][1], upperNeigh)).reshape(tensor[x[0], :pck+1, :, :, x[2]].shape)
-                j = j+1
+                tensor[x[0], pck, :, :, x[2]] = (np.outer(np.ones(rowsPerPacket), lowerNeigh)).reshape(tensor[x[0], pck, :, :, x[2]].shape)
                 continue
             lowerNeigh = tensor[y[0], y[1], 0, :, y[2]]
             upperNeigh = tensor[x[0], x[1], -1, :, x[2]]
-            tensor[x[0], pck:pck+1, :, :, x[2]] =(np.outer(coeff[j][0], lowerNeigh)
-                                            +np.outer(coeff[j][1], upperNeigh)).reshape(tensor[x[0], pck:pck+1, :, :, x[2]].shape)
-            j = j+1
+            upperCoeff = np.ones(rowsPerPacket)
+            upperCoeff[int(rowsPerPacket/2) :] = 0
+            lowerCoeff = np.ones(rowsPerPacket)
+            lowerCoeff[:int(rowsPerPacket/2)] = 0
+            tensor[x[0], pck:pck+1, :, :, x[2]] = (np.outer(lowerCoeff, lowerNeigh) + np.outer(upperCoeff, upperNeigh)).reshape(tensor[x[0], pck:pck+1, :, :, x[2]].shape)
             continue
         else:
             pck = nearestNeighDict[i][:, 1]
-            if y[1]==0: #packets lost at the end
-                lowerNeigh = tensor[y[0], y[1], 0, :, y[2]]
+            if y[1]==0:
                 upperNeigh = tensor[x[0], x[1], -1, :, x[2]]
-                tensor[x[0], pck[0]:, :, :, x[2]] =(np.outer(coeff[j][0], lowerNeigh)
-                                                +np.outer(coeff[j][1], upperNeigh)).reshape(tensor[x[0], pck[0]:, :, :, x[2]].shape)
-                j = j+1
+                upperCoeff = np.ones((tensor.shape[1]-pck[0])*rowsPerPacket)
+                tensor[x[0], pck[0]:, :, :, x[2]] = (np.outer(upperCoeff, upperNeigh)).reshape(tensor[x[0], pck[0]:, :, :, x[2]].shape)
                 continue
-            if x[1]==-1: #packets lost in the beginning
+            if x[1]==-1:
                 lowerNeigh = tensor[y[0], y[1], 0, :, y[2]]
-                upperNeigh = tensor[x[0], x[1], -1, :, x[2]]
-                tensor[x[0], :pck[-1]+1, :, :, x[2]] =(np.outer(coeff[j][0], lowerNeigh)
-                                                +np.outer(coeff[j][1], upperNeigh)).reshape(tensor[x[0], :pck[-1]+1, :, :, x[2]].shape)
-                j = j+1
+                lowerCoeff = np.ones((pck[-1]+1)*rowsPerPacket)
+                tensor[x[0], :pck[-1]+1, :, :, x[2]] = (np.outer(lowerCoeff, lowerNeigh)).reshape(tensor[x[0], :pck[-1]+1, :, :, x[2]].shape)
                 continue
-            lowerNeigh = tensor[y[0], y[1], 0, :, y[2]]
             upperNeigh = tensor[x[0], x[1], -1, :, x[2]]
-            tensor[x[0], pck[0]:pck[-1]+1, :, :, x[2]] =(np.outer(coeff[j][0], lowerNeigh)
-                                            +np.outer(coeff[j][1], upperNeigh)).reshape(tensor[x[0], pck[0]:pck[-1]+1, :, :, x[2]].shape)
-            j = j+1 #damn, this bug!!
+            lowerNeigh = tensor[y[0], y[1], 0, :, y[2]]
+            upperCoeff = np.ones((pck[-1]-pck[0]+1)*rowsPerPacket)
+            upperCoeff[int(upperCoeff.shape[0]/2):] = 0
+            lowerCoeff = np.ones((pck[-1]-pck[0]+1)*rowsPerPacket)
+            lowerCoeff[:int(lowerCoeff.shape[0]/2)] = 0
+            tensor[x[0], pck[0]:pck[-1]+1, :, :, x[2]] = (np.outer(upperCoeff, upperNeigh)+np.outer(lowerCoeff, lowerNeigh)).reshape(tensor[x[0], pck[0]:pck[-1]+1, :, :, x[2]].shape)
+            continue
     return tensor
-
 
 def createNeighDict(rP, lP, b, c):
     #rP: received packet indices of (b, c)
@@ -118,26 +108,3 @@ def nearestNeighbours(receivedIndices, lostIndices, tensorShape):
         lInds = np.where(np.logical_and(lostIndices[:, :, 0]==b, lostIndices[:, :, 2]==c))
         nearestNeighDict.update(createNeighDict(receivedIndices[rInds[:][0], rInds[:][1], 1], lostIndices[lInds[:][0], lInds[:][1], 1], b, c))
     return nearestNeighDict
-
-
-def interpCoeff(neighBours, rowsPerPacket, tensorShape):
-    coeff = []
-    for (x, y) in neighBours:
-        if x[1]==-1:
-            xS   = y[1]
-            aVec = np.ones((1, xS*rowsPerPacket)) #lower neighbour
-            bVec = 1-aVec #upper neighbour
-            coeff.append(np.vstack((aVec, bVec)))
-            # print(np.vstack((aVec, bVec)).shape)
-        elif y[1]==0:
-            yS   = tensorShape[1]-x[1]-1
-            bVec = np.ones((1, rowsPerPacket*yS)) #upper neighbour
-            aVec = 1-bVec #lower neighbour
-            coeff.append(np.vstack((aVec, bVec)))
-            # print(np.vstack((aVec, bVec)).shape)
-        else:
-            aVec = np.arange(1, (y[1]-x[1]-1)*rowsPerPacket + 1)/(((y[1]-x[1]-1)*rowsPerPacket+1))
-            bVec = 1-aVec
-            coeff.append(np.vstack((aVec, bVec)))
-            # print(np.vstack((aVec, bVec)).shape)
-    return coeff
