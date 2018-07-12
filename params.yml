@@ -28,7 +28,7 @@ Transmission:
     include: True
   channel: #type of channel
     RandomLossChannel:
-      receptionProbability: 1
+      lossProbability: 1
       include: False
     GilbertChannel:
       lossProbability: 0.01
