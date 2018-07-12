@@ -4,6 +4,7 @@ sys.path.append('..')
 from channel.gbChannel import GBC
 from channel.trivialChannel import RLC
 from model.quantizer import QLayer as QL
+from plc import linearInterp, nearestNeighbours
 
 def quantInit(quantization):
     if quantization['include']:
@@ -23,3 +24,13 @@ def loadChannel(channel):
     elif chtype=='RandomLossChannel':
         lp = channel[chtype]['lossProbability']
         return RLC(lp)
+
+def plcLoader(lossConceal):
+    chtype = list(lossConceal.keys())[0]
+
+    if chtype == 0:
+        return 'noConceal'
+    elif chtype== 'Linear':
+        return linearInterp.interpPackets
+    elif chtype== 'nearestNeighbours':
+        return nearestNeighbours.interpPackets

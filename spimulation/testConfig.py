@@ -8,7 +8,7 @@ from .utils import *
 from models.BrokenModel import BrokenModel as BM
 from .simmods import *
 
-from calloc import loadChannel, quantInit
+from calloc import loadChannel, quantInit, plcLoader
 
 def runSimulation(model, epochs, splitLayer, task, modelDict, transDict):
     task.gatherData()
@@ -34,6 +34,7 @@ def runSimulation(model, epochs, splitLayer, task, modelDict, transDict):
 
     channel = loadChannel(channel)
     quant   = quantInit(quantization)
+    conceal = plcLoader(lossConceal)
 
     # for i in range(epochs):
     #     while not dataGen.runThrough:
