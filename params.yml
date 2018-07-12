@@ -1,13 +1,14 @@
 #represents the task such as classification, segmentation etc
 Task:
   value: 0
+  epochs: 2
 
 #location of the test images
 TestInput:
   testdir: C:\Users\hunnibha\projectStuff\code\test\images\largeTest #each folder's name must be the corresponding class number, containing all the images of that class only
 
 PreProcess:
-  reshapeDims: (224, 224)
+  reshapeDims: [224, 224]
   batch_size: 64
   normalize: True
 

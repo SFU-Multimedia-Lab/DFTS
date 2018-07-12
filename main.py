@@ -81,10 +81,11 @@ def userInterface():
                         paramsDict['PreProcess']['batch_size'],
                         paramsDict['PreProcess']['normalize'])
 
+    epoch = paramsDict['Task']['epochs']
     splitLayer = paramsDict['SplitLayer']['split']
     transDict  = paramsDict['Transmission']
 
-    runSimulation(model, splitLayer, task, modelDict, transDict)
+    runSimulation(model, epoch, splitLayer, task, modelDict, transDict)
 
 
 if __name__ == "__main__":
