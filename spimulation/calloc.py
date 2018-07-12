@@ -3,7 +3,7 @@ sys.path.append('..')
 
 from channel.gbChannel import GBC
 from channel.trivialChannel import RLC
-from model.quantizer import QLayer as QL
+from models.quantizer import QLayer as QL
 from plc import linearInterp, nearestNeighbours
 
 def quantInit(quantization):

@@ -1,7 +1,7 @@
 #represents the task such as classification, segmentation etc
 Task:
   value: 0
-  epochs: 2
+  epochs: 1
 
 #location of the test images
 TestInput:
@@ -36,4 +36,6 @@ Transmission:
       include: True
   concealment: #type of error concealment
     Linear:
-      include: True
+      include: False
+    nearestNeighbours:
+      include: False
