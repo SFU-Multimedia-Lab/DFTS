@@ -6,6 +6,7 @@ import numpy as np
 from .utils import *
 
 from models.BrokenModel import BrokenModel as BM
+from .simmods import *
 
 def runSimulation(model, epochs, splitLayer, task, modelDict, transDict):
     task.gatherData()
@@ -18,12 +19,9 @@ def runSimulation(model, epochs, splitLayer, task, modelDict, transDict):
     # @timing
     testModel.splitModel()
 
-    # print(testModel.deviceModel.summary())
-    # print(testModel.remoteModel.summary())
-
     for i in range(epochs):
         while not dataGen.runThrough:
             label, data = dataGen.getNextBatch()
-            print(label.shape)
-            print(data.shape)
+            deviceOut = deviceSim(testModel.deviceModel, data)
+            print(deviceOut.shape)
         dataGen.runThrough = False

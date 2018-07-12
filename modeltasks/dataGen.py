@@ -14,6 +14,8 @@ class DataGenerator(object):
         self.batch_index = 0
         self.runThrough  = False
 
+    # make preprocessing more efficient
+
     def getNextBatch(self):
         currentTestData = []
         if self.batch_index>=len(self.testData):

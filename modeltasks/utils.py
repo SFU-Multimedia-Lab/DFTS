@@ -23,6 +23,8 @@ def pTasks(testImage, reshapeDims, norm):
     # image[1] = I
     return (int(testImage[0]), I)
 
+
+#push below functions to a different file to handle all possibilities
 def _preprocess_numpy_input(x, data_format, mode):
     """Preprocesses a Numpy array encoding a batch of images.
     # Arguments
