@@ -12,6 +12,11 @@ from .simmods import *
 from .calloc import loadChannel, quantInit, plcLoader
 
 def runSimulation(model, epochs, splitLayer, task, modelDict, transDict, simDir):
+    """Runs a simulation based on the given parameters.
+
+    Forwaards the data through the model on the device, transmits it, forwards it through the model
+    on the cloud and then generates predictions.
+    """
     task.gatherData()
     dataGen = task.dataFlow()
 

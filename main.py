@@ -8,17 +8,39 @@ from spimulation.testConfig import runSimulation
 from download.utils import downloadModel
 
 class ParserError(Exception):
+    """Used to throw exceptions when multiple options are selected by
+       user.
+    """
     def __init__(self, message, errors):
         super().__init__(message)
         self.errors = errors
 
 def isURL(s):
-    #check if given string is url or not
+    """Checks if the given string is a valid http/https url.
+
+    # Arguments
+        s: Input string, can be a url
+
+    # Returns
+        bool value stating whether the given string is a url
+    """
     url = re.compile("""http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\), ]|
                         (?:%[0-9a-fA-F][0-9a-fA-F]))+""")
     return bool(url.match(s))
 
 def selectParamConfig(p, paramDict):
+    """Throws everything except for the user selected parameter.
+
+    # Argument
+        p: parameter for which selection is being made
+        paramDict: dictionary containing user selected parameters
+
+    # Returns
+        Selected parameter and the corresponding values
+
+    # Raises
+        ParserError: if more than one option is selected for a parameter
+    """
     sum = 0
     index = 0
 
@@ -38,6 +60,14 @@ def selectParamConfig(p, paramDict):
             return (index, paramDict[index])
 
 def configSettings(config):
+    """Refines the parameter dictionary to only include user selected parameters.
+
+    # Arguments
+        config: dictionary read from the YAML file
+
+    # Returns
+        Dictionary containing only the options selected by the user
+    """
     for i in config:
         if i=='Transmission':
             for j in config[i]:
@@ -50,6 +80,9 @@ def configSettings(config):
 
 
 def userInterface():
+    """Called by main function, is responsible for reading in the YAML config file
+       and calling the corresponding functions.
+    """
     ap = argparse.ArgumentParser()
     ap.add_argument("-p", "--params", help="path to the config file containing parameters", required=True)
 

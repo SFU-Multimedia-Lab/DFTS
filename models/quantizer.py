@@ -2,12 +2,21 @@ import numpy as np
 import time
 
 class QLayer(object):
-    """docstring for QLayer."""
+    """Defines the quantization layer."""
     def __init__(self, nBits):
+        """
+        # Arguments
+            nBits: number of bits of quantization
+        """
         super(QLayer, self).__init__()
         self.nBits = nBits
 
     def bitQuantizer(self, data):
+        """Quantizes the input data to the set number of bits.
+
+        # Arguments
+            data: data to be quantized
+        """
         start_time = time.time()
         self.max = np.max(data)
         self.min = np.min(data)
@@ -20,5 +29,10 @@ class QLayer(object):
         print(f"bit quantizer complete in {total_time}!!")
 
     def inverseQuantizer(self):
+        """Performs inverse of quantization
+
+        # Returns
+            De-Quantized data.
+        """
         self.quanData = (self.quanData*(self.max-self.min)/((2**self.nBits)-1)) + self.min
         return self.quanData

@@ -8,9 +8,14 @@ from models.packetModel import PacketModel as PM
 
 
 def deviceSim(model, data):
-    '''
-        * simulate a user device
-        * runs the image through the pretrained model up until the specified layer number
+    ''' Simulates the model run on the user's device
+
+    # Arguments
+        model: keras model
+        data : preprocessed data
+
+    # Returns
+        Result of the device simulation
     '''
     start_time = time.time()
     deviceOut         = model.predict(data)
@@ -23,6 +28,16 @@ def deviceSim(model, data):
 #     return deviceOut
 #
 def transmit(compressOut, channel, rowsPerPacket):
+    """Simulates packetization and transmission of the packets through a channel
+
+    # Arguments
+        compressOut: TODO
+        channel: channel object
+        rowsPerPacket: number of rows of the feature map to be considered as one packet
+
+    # Returns
+        Packetized and lost data along with the indices of the lost and retained packets
+    """
     start_time   = time.time()
     pckts        = PM(compressOut, rowsPerPacket)
 
@@ -42,8 +57,29 @@ def transmit(compressOut, channel, rowsPerPacket):
     return (pckts, lossMatrix, receivedIndices, lostIndices)
 
 def errorConceal(interpPackets, pBuffer, receivedIndices, lostIndices, rowsPerPacket):
+    """Performs packet loss concealment on the given data.
+
+    # Arguments
+        interpPackets: function object corresponding to a particular interpolation kind
+        pBuffer: packets to be interpolated
+        receivedIndices: packets that were retained
+        lostIndices: packets that were lost
+        rowsPerPacket: number of rows of the feature map to be considered as one packet
+
+    # Returns
+        Tensor whose loss has been concealed
+    """
     return interpPackets(pBuffer, receivedIndices, lostIndices, rowsPerPacket)
 
 def remoteSim(remoteModel ,channelOut):
+    """Simulates the model that is run on the cloud.
+
+    # Arguments
+        remoteModel: keras model in the cloud
+        channelOut : packets of data
+
+    # Returns
+        Prections for a particular batch of images
+    """
     data = channelOut.packetToData()
     return remoteModel.predict(data)

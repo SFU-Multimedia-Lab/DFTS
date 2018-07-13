@@ -2,14 +2,27 @@ import numpy as np
 import time
 
 class PacketModel(object):
-    """docstring for PacketModel."""
+    """Convert data to packets"""
     def __init__(self, data, rowsPerPacket):
+        """
+            # Arguments
+                data: 4-D tensor to be packetized
+                rowsPerPacket: number of rows of the feature map to be considered as one packet
+        """
         super(PacketModel, self).__init__()
         self.rowsPerPacket = rowsPerPacket
         self.dataShape     = data.shape
         self.packetSeq     = self.dataToPacket(data)
 
     def dataToPacket(self, data):
+        """ Converts 4D tensor to 5D tensor of packets
+
+        # Arguments
+            data: 4D tensor
+
+        # Returns
+            5D tensor
+        """
         self.numZeros = 0
 
         if self.dataShape[1]%self.rowsPerPacket ==0:
@@ -23,6 +36,11 @@ class PacketModel(object):
         return data
 
     def packetToData(self):
+        """Converts the packets back to original 4D tensor
+
+        # Returns
+            4D tensor
+        """
         if self.numZeros == 0:
             self.packetSeq = np.reshape(self.packetSeq, self.dataShape)
             return self.packetSeq

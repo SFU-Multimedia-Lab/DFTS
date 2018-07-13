@@ -4,8 +4,14 @@ from keras.models import Model
 import numpy as np
 
 class BrokenModel(object):
-    """docstring for BrokenModel."""
+    """Can split the model at the given layer into two parts.
+    """
     def __init__(self, model, splitLayer):
+        """
+        # Arguments
+            model: keras model to be split
+            splitLayer: layer to split the model at
+        """
         super(BrokenModel, self).__init__()
         self.model      = model
         self.layers     = [i.name for i in self.model.layers]
@@ -13,6 +19,8 @@ class BrokenModel(object):
         self.layerLoc   = self.layers.index(self.splitLayer)
 
     def splitModel(self):
+        """Splits the given keras model at the specified layer.
+        """
         self.deviceModel = Model(inputs=self.model.input, outputs=self.model.layers[self.layerLoc].output)
         rmInput          = Input(self.model.layers[self.layerLoc+1].input_shape[1:])
         self.remoteModel = rmInput

@@ -2,6 +2,17 @@ import numpy as np
 import collections
 
 def NNInterp(tensor, receivedIndices, lostIndices, rowsPerPacket):
+    """Performs nearest neighbour interpolation based packet loss concealment
+
+    # Arguments
+        tensor: packets to be interpolated, 5D
+        receivedIndices: packets that were retained
+        lostIndices: packets that were lost
+        rowsPerPacket: number of rows of the feature map to be considered as one packet
+
+    # Returns
+        5D tensor whose packets have undergone loss concealment
+    """
     nearestNeighDict   = nearestNeighbours(receivedIndices, lostIndices, tensor.shape)
 
     for i in nearestNeighDict:
@@ -47,11 +58,16 @@ def NNInterp(tensor, receivedIndices, lostIndices, rowsPerPacket):
     return tensor
 
 def createNeighDict(rP, lP, b, c):
-    #rP: received packet indices of (b, c)
-    #lP: lost packet indices of (b, c)
-    #b,c: batch, channel
+    """Finds the neighbours nearest to a lost packet in a particular tensor plane
 
+    # Arguments
+        rP: packets received in that tensor plane
+        lp: packets lost in that tensor plane
+        b,c : batch and channel number denoting the tensor plane
 
+    # Returns
+        Dictionary containing the neighbours nearest to the lost packets
+    """
     insertPos = np.searchsorted(rP, lP)
     neighDict = collections.OrderedDict()
 
@@ -89,8 +105,16 @@ def createNeighDict(rP, lP, b, c):
 
 
 def nearestNeighbours(receivedIndices, lostIndices, tensorShape):
-    #receivedIndices : lossMatrix defined in channel model(b, p, ch)
-    #lostIndices     : indices where packets are zero(b, p, ch)
+    """Creates a complete dictionary containing lost indices and their nearest neighbours
+
+    # Arguments
+        receivedIndices: packets that were retained
+        lostIndices: packets that were lost
+        tensorShape: tuple denoting the shape of 5D tensor of packets
+
+    # Returns
+        Dictionary of nearest neighBours
+    """
     nearestNeighDict = {}
 
     #each value in the receivedIndices and lossIndices is a 3d tuple
