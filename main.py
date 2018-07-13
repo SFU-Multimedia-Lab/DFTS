@@ -85,7 +85,16 @@ def userInterface():
     splitLayer = paramsDict['SplitLayer']['split']
     transDict  = paramsDict['Transmission']
 
-    runSimulation(model, epoch, splitLayer, task, modelDict, transDict)
+    simDir = paramsDict['OutputDir']['simDataDir']
+
+    if not os.path.exists(simDir):
+        try:
+            os.makedirs(simDir)
+        except OSError as exc:
+            if exc.errno != errno.EXIST:
+                raise
+
+    runSimulation(model, epoch, splitLayer, task, modelDict, transDict, simDir)
 
 
 if __name__ == "__main__":

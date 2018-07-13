@@ -21,3 +21,12 @@ def timing(func):
 def errorCalc(remoteOut, classValues):
     predictions = np.argmax(remoteOut, axis=1)
     return np.sum(np.equal(predictions, classValues))/classValues.shape[0]
+
+def createFile(quant, conceal, splitLayer):
+    fileName = ""
+    if quant!="noQuant":
+        fileName += f"{quant.nBits}BitQuant_"
+    if conceal!="noConceal":
+        fileName += "EC"
+    fileName += ".npy"
+    return fileName

@@ -1,5 +1,4 @@
 import numpy as np
-from utils import closestPowerOfTwo as cpt
 import time
 
 class QLayer(object):

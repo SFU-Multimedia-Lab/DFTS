@@ -5,7 +5,9 @@ Task:
 
 #location of the test images
 TestInput:
-  testdir: C:\Users\hunnibha\projectStuff\code\test\images\largeTest #each folder's name must be the corresponding class number, containing all the images of that class only
+  #each folder's name must be the corresponding class number,
+  #containing all the images of that class only
+  testdir: C:\Users\hunnibha\projectStuff\code\test\images\largeTest
 
 PreProcess:
   reshapeDims: [224, 224]
@@ -39,3 +41,6 @@ Transmission:
       include: False
     nearestNeighbours:
       include: False
+
+OutputDir:
+  simDataDir: '..\simData\10Loss_2bl'

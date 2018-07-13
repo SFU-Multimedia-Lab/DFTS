@@ -2,6 +2,7 @@ import sys
 sys.path.append('..')
 
 import numpy as np
+import os
 
 from .utils import *
 
@@ -10,7 +11,7 @@ from .simmods import *
 
 from .calloc import loadChannel, quantInit, plcLoader
 
-def runSimulation(model, epochs, splitLayer, task, modelDict, transDict):
+def runSimulation(model, epochs, splitLayer, task, modelDict, transDict, simDir):
     task.gatherData()
     dataGen = task.dataFlow()
 
@@ -30,7 +31,13 @@ def runSimulation(model, epochs, splitLayer, task, modelDict, transDict):
     quant   = quantInit(quantization)
     conceal = plcLoader(lossConceal)
 
+    fileName = createFile(quant, conceal, splitLayer)
+    fileName = os.path.join(simDir, fileName)
+
+    testData = []
+
     for i in range(epochs):
+        epochLoss = []
         while not dataGen.runThrough:
             label, data = dataGen.getNextBatch()
             deviceOut = deviceSim(testModel.deviceModel, data)
@@ -48,5 +55,9 @@ def runSimulation(model, epochs, splitLayer, task, modelDict, transDict):
                 deviceOut.packetSeq = quant.inverseQuantizer()
             remoteOut = remoteSim(testModel.remoteModel, deviceOut)
             loss      = errorCalc(remoteOut, label)
+            epochLoss.append(loss)
             print(loss)
+        epochLoss = np.array(epochLoss)
+        testData.append(np.array([i, np.mean(epochLoss)]))
         dataGen.runThrough = False
+    np.save(fileName, np.array(testData))
