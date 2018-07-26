@@ -11,7 +11,7 @@ TestInput:
 
 PreProcess:
   reshapeDims: [224, 224]
-  batch_size: 64
+  batch_size: 2
   normalize: True
 
 #official keras model or link to a model compiled in keras

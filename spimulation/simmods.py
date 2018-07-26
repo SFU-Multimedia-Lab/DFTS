@@ -69,6 +69,7 @@ def errorConceal(interpPackets, pBuffer, receivedIndices, lostIndices, rowsPerPa
     # Returns
         Tensor whose loss has been concealed
     """
+    print("Error Concealment")
     return interpPackets(pBuffer, receivedIndices, lostIndices, rowsPerPacket)
 
 def remoteSim(remoteModel ,channelOut):
