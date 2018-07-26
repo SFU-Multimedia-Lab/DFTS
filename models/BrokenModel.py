@@ -1,7 +1,31 @@
 import keras
 from keras.layers import Input
 from keras.models import Model
+from .utils.cloud import remoteModel
 import numpy as np
+
+def modelOut(model, layers, index):
+    device = set(layers[:index+1])
+    remote = layers[index+1:]
+
+    deviceOuts = []
+    remoteIns  = []
+    skipNames  = []
+
+    for i in remote:
+        rIndex = layers.index(i)
+        curIn = model.layers[rIndex].input
+        for j in device:
+            dIndex = layers.index(j)
+            out = model.layers[dIndex].output
+            if curIn==out:
+                d = model.layers[index].output
+                r = Input(out.shape[1:])
+                deviceOuts.append(out)
+                remoteIns.append(r)
+                skipNames.append(model.layers[dIndex].name)
+
+    return deviceOuts, remoteIns, skipNames
 
 class BrokenModel(object):
     """Can split the model at the given layer into two parts.
@@ -21,12 +45,7 @@ class BrokenModel(object):
     def splitModel(self):
         """Splits the given keras model at the specified layer.
         """
-        self.deviceModel = Model(inputs=self.model.input, outputs=self.model.layers[self.layerLoc].output)
-        rmInput          = Input(self.model.layers[self.layerLoc+1].input_shape[1:])
-        self.remoteModel = rmInput
-        for layer in self.model.layers[self.layerLoc+1:]:
-            self.remoteModel = layer(self.remoteModel)
-        self.remoteModel = Model(inputs=rmInput, outputs=self.remoteModel)
+        deviceOuts, remoteIns, skipNames = modelOut(self.model, self.layers, self.layerLoc)
 
-        for i in range(1, len(self.remoteModel.layers)):
-            self.remoteModel.layers[i].set_weights(self.model.get_layer(self.layers[self.layerLoc+i]).get_weights())
+        self.deviceModel = Model(inputs=self.model.input, outputs=deviceOuts)
+        self.remoteModel = remoteModel(self.model, 'block3_pool')
