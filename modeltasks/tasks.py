@@ -55,3 +55,10 @@ class CFTask(object):
             'normalize'  : self.normalize
         }
         return DG(self.testData, **params)
+
+
+class ODTask(object):
+    """docstring for ODTask."""
+    def __init__(self, arg):
+        super(ODTask, self).__init__()
+        self.arg = arg
