@@ -11,7 +11,7 @@ from .simmods import *
 
 from .calloc import loadChannel, quantInit, plcLoader
 
-def runSimulation(model, epochs, splitLayer, task, modelDict, transDict, simDir):
+def runSimulation(model, epochs, splitLayer, task, modelDict, transDict, simDir, customObjects):
     """Runs a simulation based on the given parameters.
 
     Forwaards the data through the model on the device, transmits it, forwards it through the model
@@ -22,7 +22,9 @@ def runSimulation(model, epochs, splitLayer, task, modelDict, transDict, simDir)
 
     model = modelLoader(model, modelDict)
 
-    testModel = BM(model, splitLayer)
+    customObjects = None
+
+    testModel = BM(model, splitLayer, customObjects)
 
     # @timing
     testModel.splitModel()

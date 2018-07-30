@@ -1,6 +1,6 @@
 from modelTasks.tasks import *
 
-def taskAllocater(task, testDir, reshapeDims, batch_size=64, normalize=False):
+def taskAllocater(task, testDir, batch_size, taskParams):
     """Chooses the task based on the user's options
 
     # Arguments
@@ -8,9 +8,9 @@ def taskAllocater(task, testDir, reshapeDims, batch_size=64, normalize=False):
         testDir: directory location of the images
         batch_size: number of images to be forwarded through the model at once
         reshapeDims: list containing the dimensions of the reshaped image
-        normalize: bool value indicating whether images must be normalized        
+        normalize: bool value indicating whether images must be normalized
     """
     if task==0:
-        return CFTask(testDir, reshapeDims, batch_size, normalize)
+        return CFTask(testDir['images'], taskParams['reshapeDims'], batch_size, taskParams['normalize'])
     if task==1:
         return ODTask(testDir)

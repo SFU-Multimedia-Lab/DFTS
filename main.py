@@ -146,10 +146,8 @@ def userInterface():
 
 
 
-    task = taskAllocater(task, paramsDict['TestInput']['testdir'],
-                        paramsDict['PreProcess']['reshapeDims'],
-                        paramsDict['PreProcess']['batch_size'],
-                        paramsDict['PreProcess']['normalize'])
+    task = taskAllocater(task, paramsDict['TestInput']['testdir'], batch_size,
+                        taskParams)
 
     if not os.path.exists(simDir):
         try:
@@ -158,7 +156,7 @@ def userInterface():
             if exc.errno != errno.EXIST:
                 raise
 
-    # runSimulation(model, epoch, splitLayer, task, modelDict, transDict, simDir)
+    runSimulation(model, epoch, splitLayer, task, modelDict, transDict, simDir, customObjects)
 
 if __name__ == "__main__":
     userInterface()
