@@ -1,7 +1,7 @@
 import keras
 from keras.layers import Input
 from keras.models import Model
-from utils.cloud import remoteModel
+from .utils.cloud import remoteModel
 import numpy as np
 
 def modelOut(model, layers, index):

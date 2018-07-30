@@ -1,10 +1,11 @@
 0:
   reshapeDims: [224, 224]
   normalize: True
+  metrics: accuracy
 
 1:
   reshapeDims: [300, 300]
   metrics:
     map:
-      iou: 0.5
+      iou: [0.5]
       include: True

@@ -94,31 +94,62 @@ def userInterface():
         config = yaml.load(c)
     paramsDict = configSettings(config)
 
-    model = paramsDict['Model']['kerasmodel']
-    modelDict = {'xception':'Xception', 'vgg16':'VGG16', 'VGG19':'VGG19', 'resnet50':'ResNet50',
-                 'inceptionv3':'InceptionV3', 'inceptionresnetv2':'InceptionResnetV2',
-                 'mobilenet':'MobileNet', 'densenet':'DenseNet','nasnet':'NASNet'}
+    ############################################
+    #Keras model params
+    ############################################
+    modelPath     = paramsDict['Model']['kerasmodel']
+    customObjects = paramsDict['Model']['customObjects']
+    modelDict     = {'xception':'Xception', 'vgg16':'VGG16', 'VGG19':'VGG19', 'resnet50':'ResNet50',
+                     'inceptionv3':'InceptionV3', 'inceptionresnetv2':'InceptionResnetV2',
+                     'mobilenet':'MobileNet', 'densenet':'DenseNet','nasnet':'NASNet'}
 
-    if isURL(model):
-        model = downloadModel(model)
-    elif model.lower() in modelDict:
-        model = modelDict[model.lower()]
+    if os.path.isfile(modelPath):
+        model = modelPath
+    elif modelPath.lower() in modelDict:
+        model = modelDict[modelPath.lower()]
     else:
         print('Unable to load the given model!')
         sys.exit(0)
 
+    ############################################
+    #Task selection
+    ############################################
     task = paramsDict['Task']['value']
+    epoch = paramsDict['Task']['epochs']
+
+    #############################################
+    # Test input paramters                      #
+    #############################################
+    dataset    = paramsDict['TestInput']['dataset']
+    batch_size = paramsDict['TestInput']['batch_size']
+    testdir    = paramsDict['TestInput']['testdir']
+
+    #############################################
+    # Split layer
+    #############################################
+    splitLayer = paramsDict['SplitLayer']['split']
+
+    #############################################
+    # Transmission parameters
+    #############################################
+    transDict  = paramsDict['Transmission']
+
+    simDir = paramsDict['OutputDir']['simDataDir']
+
+    #############################################
+    # Test parameters such as metrics, reshape dimensions
+    #############################################
+    tParam = paramsDict['taskParams']
+    with open(tParam) as c:
+        tConfig = yaml.load(c)
+    taskParams = tConfig[task]
+
+
 
     task = taskAllocater(task, paramsDict['TestInput']['testdir'],
                         paramsDict['PreProcess']['reshapeDims'],
                         paramsDict['PreProcess']['batch_size'],
                         paramsDict['PreProcess']['normalize'])
-
-    epoch = paramsDict['Task']['epochs']
-    splitLayer = paramsDict['SplitLayer']['split']
-    transDict  = paramsDict['Transmission']
-
-    simDir = paramsDict['OutputDir']['simDataDir']
 
     if not os.path.exists(simDir):
         try:
@@ -127,8 +158,7 @@ def userInterface():
             if exc.errno != errno.EXIST:
                 raise
 
-    runSimulation(model, epoch, splitLayer, task, modelDict, transDict, simDir)
-
+    # runSimulation(model, epoch, splitLayer, task, modelDict, transDict, simDir)
 
 if __name__ == "__main__":
     userInterface()
