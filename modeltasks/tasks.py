@@ -60,6 +60,14 @@ class CFTask(object):
 
 class ODTask(object):
     """docstring for ODTask."""
-    def __init__(self, arg):
+    def __init__(self, testDir, reshapeDims, batch_size, classes):
         super(ODTask, self).__init__()
-        self.arg = arg
+        self.testDir     = testDir
+        self.reshapeDims = reshapeDims
+        self.batch_size  = batch_size
+        self.classes     = classes
+
+        #move parse data function to this class to handle datasets other than PASCAL VOC
+
+    def dataFlow(self):
+        return ODDG(self.testDir, self.reshapeDims, self.batch_size, self.classes)
