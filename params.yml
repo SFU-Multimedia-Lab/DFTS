@@ -1,29 +1,29 @@
 #represents the task such as classification, segmentation etc
 Task:
-  value: 0
+  value: 1
   epochs: 1
 
 #location of the test images
 TestInput:
   dataset: voc2007
-  batch_size: 64
+  batch_size: 8
   testdir:
-    annotations: C:\Users\hunnibha\Desktop\datasets\VOCdevkit\VOC2007\Annotations
-    images: C:\Users\hunnibha\projectStuff\code\test\images\largeTest
-    testNames: C:\Users\hunnibha\Desktop\datasets\VOCdevkit\VOC2007\ImageSets\Main\test.txt
+    annotations: [C:\Users\hunnibha\Desktop\datasets\VOCdevkit\VOC2007\Annotations]
+    images: [C:\Users\hunnibha\Desktop\datasets\VOCdevkit\VOC2007\JPEGImages]
+    testNames: [C:\Users\hunnibha\Desktop\datasets\VOCdevkit\VOC2007\ImageSets\Main\test.txt]
 
 taskParams: taskParams.yml
 
 #official keras model or link to a model compiled in keras
 Model:
-  kerasmodel: vgg16
+  kerasmodel: C:\Users\hunnibha\Desktop\ssd_keras\models\ssdModel.h5
   customObjects:
     module: [keras_layers.keras_layer_AnchorBoxes, keras_layers.keras_layer_DecodeDetections, keras_layers.keras_layer_DecodeDetectionsFast, keras_layers.keras_layer_L2Normalization]
     class: [AnchorBoxes, DecodeDetections, DecodeDetectionsFast, L2Normalization]
 
 #one of the keras layer names
 SplitLayer:
-  split: block3_pool
+  split: fc6
 
 #transmission parameters
 Transmission:

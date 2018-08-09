@@ -21,8 +21,8 @@ def pTasks(testImage, reshapeDims, norm):
     if norm:
         I = preprocess_input(I)
     # image[1] = I
-    return (int(testImage[0]), I)
-
+    # return (int(testImage[0]), I)
+    return I
 
 #push below functions to a different file to handle all possibilities
 def _preprocess_numpy_input(x, data_format, mode):

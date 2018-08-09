@@ -1,7 +1,8 @@
 import os
 import numpy as np
 from .utils import absoluteFilePaths
-from .dataGen import DataGenerator as DG
+from .dataGen import CFDataGenerator as CFDG
+from .dataGen import ODDataGenerator as ODDG
 
 class CFTask(object):
     """Initializes the simulator for classfication.
@@ -54,7 +55,7 @@ class CFTask(object):
             'n_classes'  : self.numClasses,
             'normalize'  : self.normalize
         }
-        return DG(self.testData, **params)
+        return CFDG(self.testData, **params)
 
 
 class ODTask(object):
