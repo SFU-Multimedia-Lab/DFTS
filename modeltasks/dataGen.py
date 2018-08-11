@@ -121,8 +121,9 @@ class ODDataGenerator(object):
                     labels_output_format=('class_id', 'xmin', 'ymin', 'xmax', 'ymax')
                     for item in self.labels_output_format:
                         box.append(item_dict[item])
+                    boxes = [item_dict['image_id']]
                     boxes.append(box)
-                    self.labels.append(boxes)
+                self.labels.append(boxes)
 
     def getNextBatch(self):
         currentTestData = []
@@ -141,15 +142,35 @@ class ODDataGenerator(object):
         if self.batch_index==len(self.filenames):
             self.runThrough = True
         self.batch_index    += self.batch_size
+        images = np.array([item[-1] for item in currentTestData])
+        labels = np.array([item[1] for item in currentTestData])
+        imageIds = np.array([item[0] for item in currentTestData])
+        currentTestData = ((imageIds, labels), images)
         return currentTestData
-
-
-
 
     def preprocess(self, testImage, label, reshapeDims):
         I = image.load_img(testImage)
+        imgH = I.size[0]
+        imgW = I.size[1]
         I = I.resize(reshapeDims)
         I = image.img_to_array(I)
-        return (label, np.array(I))
+        label = labelReshape(label[1], imgH, imgW, reshapeDims)
+        imageId = label[0]
+        return (imageId, label, np.array(I))
+
+    def labelReshape(label, imgH, imgW, reshapeDims):
+        rH = reshapeDims[0]
+        rW = reshapeDims[1]
+        xmin = 1
+        ymin = 2
+        xmax = 3
+        ymax = 4
+
+        for i in range(len(labels)):
+            labels[i][xmin] = (labels[i][xmin]*rH)/imgH
+            labels[i][xmax] = (labels[i][xmax]*rH)/imgH
+            labels[i][ymin] = (labels[i][ymin]*rW)/imgW
+            labels[i][ymax] = (labels[i][ymax]*rW)/imgW
+        return labels
 
         

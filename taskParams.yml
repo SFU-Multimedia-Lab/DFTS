@@ -13,4 +13,3 @@
   metrics:
     map:
       iou: [0.5]
-      include: True
