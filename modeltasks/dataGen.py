@@ -17,7 +17,7 @@ class CFDataGenerator(object):
             testData: directory location of the images
             params  : dictionary containing pre processing parameters
         """
-        super(DataGenerator, self).__init__()
+        super(CFDataGenerator, self).__init__()
         self.testData    = testData
         self.reshapeDims = params['reshapeDims']
         self.batch_size  = params['batch_size']
