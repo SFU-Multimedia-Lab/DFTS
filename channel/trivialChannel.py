@@ -23,4 +23,4 @@ class RLC(object):
         self.lossMatrix = np.random.random(lossSize)
         probMatrix      = np.full(lossSize, self.lossProb)
 
-        return np.greater_equal(lossMatrix, probMatrix).astype('float64')
+        return np.greater_equal(self.lossMatrix, probMatrix).astype('float64')

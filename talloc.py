@@ -13,4 +13,4 @@ def taskAllocater(task, testDir, batch_size, taskParams):
     if task==0:
         return CFTask(testDir['images'], taskParams['reshapeDims'], batch_size, taskParams['normalize'])
     if task==1:
-        return ODTask(testDir, taskParams['reshapeDims'], batch_size, taskParams['classes'])
+        return ODTask(testDir, taskParams['reshapeDims'], batch_size, taskParams['classes'], taskParams['num_classes'])

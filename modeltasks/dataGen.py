@@ -1,6 +1,8 @@
 import numpy as np
 from PIL import Image
+import cv2
 import os
+import sys
 from .utils import pTasks
 from tqdm import tqdm, trange
 from bs4 import BeautifulSoup
@@ -65,7 +67,7 @@ class CFDataGenerator(object):
 
 class ODDataGenerator(object):
     """docstring for ODDataGenerator"""
-    def __init__(self, testDir, reshapeDims, batch_size, classes):
+    def __init__(self, testDir, reshapeDims, batch_size, classes, num_classes):
         super(ODDataGenerator, self).__init__()
         self.images      = testDir['images'] #each is a list
         self.imageSet    = testDir['testNames']
@@ -73,104 +75,132 @@ class ODDataGenerator(object):
         self.reshapeDims = reshapeDims
         self.batch_size  = batch_size
         self.classes     = classes
+        self.num_classes = num_classes
         self.batch_index = 0
         self.runThrough  = False
         self.parseData()
 
     def parseData(self):
         self.filenames = []
-        self.imagesIds = []
+        self.imageIds = []
         self.labels    = []
+        self.eval_neutral = []
 
         for imdir, imfset, anndir in zip(self.images, self.imageSet, self.annoDirs):
             with open(imfset) as f:
                 imagesIds = [line.strip() for line in f]
-                self.imagesIds+=imagesIds
+                self.imageIds+=imagesIds
 
             it = tqdm(imagesIds, desc="Processing image set '{}'".format(os.path.basename(imfset)), file=sys.stdout)
 
             for imageId in it:
+                # temp = [item_dict['image_id']]
                 filename = '{}'.format(imageId) + '.jpg'
                 self.filenames.append(os.path.join(imdir, filename))
 
                 with open(os.path.join(anndir, imageId+".xml")) as f:
                     soup = BeautifulSoup(f, 'xml')
                 boxes = []
+                eval_neutr = []
                 objects = soup.find_all('object')
 
                 for obj in objects:
                     class_name = obj.find('name', recursive=False).text
                     class_id = self.classes.index(class_name)
-                    pose = obj.find('pose', recursive=False).text
+                    # pose = obj.find('pose', recursive=False).text
                     bndbox = obj.find('bndbox', recursive=False)
                     xmin = int(bndbox.xmin.text)
                     ymin = int(bndbox.ymin.text)
                     xmax = int(bndbox.xmax.text)
                     ymax = int(bndbox.ymax.text)
+                    difficult = int(obj.find('difficult', recursive=False).text)
 
                     item_dict = {'image_name': filename,
                                  'image_id': imageId,
                                  'class_name': class_name,
                                  'class_id': class_id,
-                                 'pose': pose,
                                  'xmin': xmin,
                                  'ymin': ymin,
                                  'xmax': xmax,
                                  'ymax': ymax}
                     box = []
                     labels_output_format=('class_id', 'xmin', 'ymin', 'xmax', 'ymax')
-                    for item in self.labels_output_format:
+                    for item in labels_output_format:
                         box.append(item_dict[item])
-                    boxes = [item_dict['image_id']]
+                    
+                    # temp.append(box)
                     boxes.append(box)
+                    if difficult: eval_neutr.append(True)
+                    else: eval_neutr.append(False)
                 self.labels.append(boxes)
+                self.eval_neutral.append(eval_neutr)
+        # print(len(self.filenames))
 
     def getNextBatch(self):
         currentTestData = []
         if self.batch_index>=len(self.filenames):
             self.batch_index = 0
-            currentTestData = [self.preprocess(i, l, self.reshapeDims) for i, l in 
-                               zip(self.filenames[self.batch_index:self.batch_index+self.batch_size], 
-                               self.labels[self.batch_index:self.batch_index+self.batch_size])]
+            # currentTestData = [self.preprocess(i, l, imageId, self.reshapeDims) for i, l, imageId in 
+            #                    zip(self.filenames[self.batch_index:self.batch_index+self.batch_size], 
+            #                    self.labels[self.batch_index:self.batch_index+self.batch_size],
+            #                    self.imageIds[self.batch_index:self.batch_index+self.batch_size])]
+            currentTestData = self.preprocess(self.filenames[self.batch_index:self.batch_index+self.batch_size],
+                                             self.labels[self.batch_index:self.batch_index+self.batch_size],
+                                             self.imageIds[self.batch_index:self.batch_index+self.batch_size],
+                                             self.reshapeDims)
         elif self.batch_index + self.batch_size >= len(self.filenames) and self.batch_index<len(self.filenames):
-            currentTestData = [self.preprocess(i, l, self.reshapeDims) for i, l in 
-                               zip(self.filenames[self.batch_index:], self.labels[self.batch_index:])]
+            # currentTestData = [self.preprocess(i, l, imageId, self.reshapeDims) for i, l, imageId in 
+            #                    zip(self.filenames[self.batch_index:], self.labels[self.batch_index:], self.imageIds[self.batch_index:])]
+            currentTestData = self.preprocess(self.filenames[self.batch_index:],
+                                              self.labels[self.batch_index:],
+                                              self.imageIds[self.batch_index:],
+                                              self.reshapeDims)
+            self.batch_index = len(self.filenames)
         else:
-            currentTestData = [[self.preprocess(i, l, self.reshapeDims) for i, l in 
-                               zip(self.filenames[self.batch_index:self.batch_index+self.batch_size], 
-                               self.labels[self.batch_index:self.batch_index+self.batch_size])]]
+            # currentTestData = [self.preprocess(i, l, imageId, self.reshapeDims) for i, l, imageId in 
+            #                    zip(self.filenames[self.batch_index:self.batch_index+self.batch_size], 
+            #                    self.labels[self.batch_index:self.batch_index+self.batch_size],
+            #                    self.imageIds[self.batch_index:self.batch_index+self.batch_size])]
+            currentTestData = self.preprocess(self.filenames[self.batch_index:self.batch_index+self.batch_size],
+                                             self.labels[self.batch_index:self.batch_index+self.batch_size],
+                                             self.imageIds[self.batch_index:self.batch_index+self.batch_size],
+                                             self.reshapeDims)
         if self.batch_index==len(self.filenames):
             self.runThrough = True
-        self.batch_index    += self.batch_size
-        images = np.array([item[-1] for item in currentTestData])
-        labels = np.array([item[1] for item in currentTestData])
-        imageIds = np.array([item[0] for item in currentTestData])
-        currentTestData = ((imageIds, labels), images)
+        else:
+            self.batch_index    += self.batch_size
+
         return currentTestData
 
-    def preprocess(self, testImage, label, reshapeDims):
-        I = image.load_img(testImage)
-        imgH = I.size[0]
-        imgW = I.size[1]
-        I = I.resize(reshapeDims)
-        I = image.img_to_array(I)
-        label = labelReshape(label[1], imgH, imgW, reshapeDims)
-        imageId = label[0]
-        return (imageId, label, np.array(I))
+    def preprocess(self, testImage, labels, imageIds, reshapeDims):
+        Ids = []
+        labelList = []
+        imgs = []
 
-    def labelReshape(label, imgH, imgW, reshapeDims):
-        rH = reshapeDims[0]
-        rW = reshapeDims[1]
         xmin = 1
         ymin = 2
         xmax = 3
         ymax = 4
 
-        for i in range(len(labels)):
-            labels[i][xmin] = (labels[i][xmin]*rH)/imgH
-            labels[i][xmax] = (labels[i][xmax]*rH)/imgH
-            labels[i][ymin] = (labels[i][ymin]*rW)/imgW
-            labels[i][ymax] = (labels[i][ymax]*rW)/imgW
-        return labels
+        for i in range(len(imageIds)):
+            Ids.append(imageIds[i])
 
-        
+            # I = image.load_img(testImage[i])
+            # I = I.resize(reshapeDims)
+            # I = image.img_to_array(I)
+
+            # imgs.append(I)
+
+            I = cv2.imread(testImage[i])
+            imgH, imgW = I.shape[:2]
+            I = cv2.resize(I, dsize=tuple(reshapeDims), interpolation=cv2.INTER_LINEAR)
+            imgs.append(I)          
+
+            imageBoxes = np.copy(labels[i])
+            imageBoxes[:, [ymin, ymax]] = np.round(imageBoxes[:, [ymin, ymax]] * (reshapeDims[0] / imgH), decimals=0)
+            imageBoxes[:, [xmin, xmax]] = np.round(imageBoxes[:, [xmin, xmax]] * (reshapeDims[1] / imgW), decimals=0)
+            labelList.append(imageBoxes)
+
+        return ((np.array(Ids), np.array(labelList)), np.array(imgs))
+
+       

@@ -11,23 +11,24 @@ from .simmods import *
 
 from .calloc import loadChannel, quantInit, plcLoader
 
-def runSimulation(model, epochs, splitLayer, task, modelDict, transDict, simDir, customObjects):
+def runSimulation(model, epochs, splitLayer, task, modelDict, transDict, simDir, customObjects, evaluator):
     """Runs a simulation based on the given parameters.
 
     Forwaards the data through the model on the device, transmits it, forwards it through the model
     on the cloud and then generates predictions.
     """
-    task.gatherData()
+    # task.gatherData()
     dataGen = task.dataFlow()
 
-    model = modelLoader(model, modelDict)
-
-    customObjects = None
+    model = modelLoader(model, modelDict, customObjects)
 
     testModel = BM(model, splitLayer, customObjects)
 
     # @timing
     testModel.splitModel()
+
+    # print(testModel.deviceModel.summary())
+    # print(testModel.remoteModel.summary())
 
     rowsPerPacket = transDict['rowsperpacket']
     quantization  = transDict['quantization']
@@ -42,29 +43,61 @@ def runSimulation(model, epochs, splitLayer, task, modelDict, transDict, simDir,
     fileName = os.path.join(simDir, fileName)
 
     testData = []
+    quanParams = []
 
     for i in range(epochs):
-        epochLoss = []
         while not dataGen.runThrough:
             label, data = dataGen.getNextBatch()
+            print(dataGen.batch_index)
             deviceOut = deviceSim(testModel.deviceModel, data)
+            devOut = []
+            if not isinstance(deviceOut, list):
+                print('Hello')
+                devOut.append(deviceOut)
+                deviceOut = np.array(devOut)
 
             if quant!='noQuant':
-                quant.bitQuantizer(deviceOut)
-                deviceOut = quant.quanData
+                for i in range(len(deviceOut)):
+                    quant.bitQuantizer(deviceOut[i])
+                    deviceOut[i] = quant.quanData
+                    quanParams.append([quant.min, quant.max])
             if channel!='noChannel':
-                deviceOut, lossMatrix, receivedIndices, lostIndices = transmit(deviceOut, channel, rowsPerPacket)
-                channel.lossMatrix = []
+                lossMatrix = []
+                receivedIndices = []
+                lostIndices = []
+                dOut = []
+                for i in range(len(deviceOut)):
+                    dO, lM, rI, lI = transmit(deviceOut[i], channel, rowsPerPacket)
+                    dOut.append(dO)
+                    lossMatrix.append(lM)
+                    receivedIndices.append(rI)
+                    lostIndices.append(lI)
+                    channel.lossMatrix = []
+                deviceOut = dOut
+                # deviceOut, lossMatrix, receivedIndices, lostIndices = transmit(deviceOut, channel, rowsPerPacket)
+                # channel.lossMatrix = []
             if conceal!='noConceal':
-                deviceOut.packetSeq = errorConceal(conceal, deviceOut.packetSeq, receivedIndices, lostIndices, rowsPerPacket)
+                for i in range(len(deviceOut)):
+                    deviceOut[i].packetSeq = errorConceal(conceal, deviceOut[i].packetSeq, receivedIndices[i], lostIndices[i], rowsPerPacket)
+                # deviceOut.packetSeq = errorConceal(conceal, deviceOut.packetSeq, receivedIndices, lostIndices, rowsPerPacket)
             if quant!='noQuant':
-                quant.quanData      = deviceOut.packetSeq
-                deviceOut.packetSeq = quant.inverseQuantizer()
-            remoteOut = remoteSim(testModel.remoteModel, deviceOut)
-            loss      = errorCalc(remoteOut, label)
-            epochLoss.append(loss)
-            print(loss)
-        epochLoss = np.array(epochLoss)
-        testData.append(np.array([i, np.mean(epochLoss)]))
-        dataGen.runThrough = False
-    np.save(fileName, np.array(testData))
+                for i in range(len(deviceOut)):
+                    if channel!='noChannel':
+                        quant.quanData = deviceOut[i].packetSeq
+                        qMin, qMax = quanParams[i]
+                        quant.min = qMin
+                        quant.max = qMax
+                        deviceOut[i].packetSeq = quant.inverseQuantizer()
+                    else:
+                        quant.quanData = deviceOut[i]
+                        deviceOut[i] = quant.inverseQuantizer()
+                # quant.quanData      = deviceOut.packetSeq
+                # deviceOut.packetSeq = quant.inverseQuantizer()
+            remoteOut = remoteSim(testModel.remoteModel, deviceOut, channel)
+            evaluator.evaluate(remoteOut, label)
+        results = evaluator.simRes()
+        print(results)
+    #     testData.append(np.array([i, results]))
+    #     dataGen.runThrough = False
+    #     evalloc.runThrough = True
+    # np.save(fileName, np.array(testData))

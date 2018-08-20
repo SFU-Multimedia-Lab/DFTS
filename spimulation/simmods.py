@@ -72,7 +72,7 @@ def errorConceal(interpPackets, pBuffer, receivedIndices, lostIndices, rowsPerPa
     print("Error Concealment")
     return interpPackets(pBuffer, receivedIndices, lostIndices, rowsPerPacket)
 
-def remoteSim(remoteModel ,channelOut):
+def remoteSim(remoteModel ,channelOut, channel):
     """Simulates the model that is run on the cloud.
 
     # Arguments
@@ -82,5 +82,14 @@ def remoteSim(remoteModel ,channelOut):
     # Returns
         Prections for a particular batch of images
     """
-    data = channelOut.packetToData()
-    return remoteModel.predict(data)
+    if channel=='noChannel':
+        cOut = []
+        for i in range(len(channelOut)):
+            cOut.append(channelOut[i])
+        return remoteModel.predict(cOut)
+    cOut = []
+    for i in range(len(channelOut)):
+        data = channelOut[i].packetToData()
+        cOut.append(data)
+    # cOut = np.array(cOut)
+    return remoteModel.predict(cOut)

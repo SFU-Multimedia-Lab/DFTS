@@ -4,7 +4,7 @@ import time
 import numpy as np
 from keras.models import load_model
 
-def modelLoader(model, modelDict):
+def modelLoader(model, modelDict, customObjects):
     """Loads the desired keras model from the disk
 
     # Arguments
@@ -18,7 +18,7 @@ def modelLoader(model, modelDict):
         model = getattr(keras.applications,f"{model}")()
         return model
     else:
-        model = load_model(model)
+        model = load_model(model, custom_objects=customObjects)
         return model
 
 def timing(func):
