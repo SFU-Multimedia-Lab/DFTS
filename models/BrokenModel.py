@@ -1,31 +1,31 @@
 import keras
 from keras.layers import Input
 from keras.models import Model
-from .utils.cloud import remoteModel
+from .utils.cloud import remoteModel, modelOut
 import numpy as np
 
-def modelOut(model, layers, index):
-    device = set(layers[:index+1])
-    remote = layers[index+1:]
+# def modelOut(model, layers, index):
+#     device = set(layers[:index+1])
+#     remote = layers[index+1:]
 
-    deviceOuts = []
-    remoteIns  = []
-    skipNames  = []
+#     deviceOuts = []
+#     remoteIns  = []
+#     skipNames  = []
 
-    for i in remote:
-        rIndex = layers.index(i)
-        curIn = model.layers[rIndex].input
-        for j in device:
-            dIndex = layers.index(j)
-            out = model.layers[dIndex].output
-            if curIn==out:
-                d = model.layers[index].output
-                r = Input(out.shape[1:])
-                deviceOuts.append(out)
-                remoteIns.append(r)
-                skipNames.append(model.layers[dIndex].name)
+#     for i in remote:
+#         rIndex = layers.index(i)
+#         curIn = model.layers[rIndex].input
+#         for j in device:
+#             dIndex = layers.index(j)
+#             out = model.layers[dIndex].output
+#             if curIn==out:
+#                 d = model.layers[index].output
+#                 r = Input(out.shape[1:])
+#                 deviceOuts.append(out)
+#                 remoteIns.append(r)
+#                 skipNames.append(model.layers[dIndex].name)
 
-    return deviceOuts, remoteIns, skipNames
+#     return deviceOuts, remoteIns, skipNames
 
 class BrokenModel(object):
     """Can split the model at the given layer into two parts.

@@ -43,23 +43,23 @@ def runSimulation(model, epochs, splitLayer, task, modelDict, transDict, simDir,
     fileName = os.path.join(simDir, fileName)
 
     testData = []
-    quanParams = []
 
     for i in range(epochs):
         while not dataGen.runThrough:
+            quanParams = []
             label, data = dataGen.getNextBatch()
             print(dataGen.batch_index)
             deviceOut = deviceSim(testModel.deviceModel, data)
             devOut = []
             if not isinstance(deviceOut, list):
-                print('Hello')
                 devOut.append(deviceOut)
-                deviceOut = np.array(devOut)
+                deviceOut = devOut
 
             if quant!='noQuant':
                 for i in range(len(deviceOut)):
                     quant.bitQuantizer(deviceOut[i])
                     deviceOut[i] = quant.quanData
+                    # print(np.unique(deviceOut[i]).size)
                     quanParams.append([quant.min, quant.max])
             if channel!='noChannel':
                 lossMatrix = []
@@ -90,6 +90,9 @@ def runSimulation(model, epochs, splitLayer, task, modelDict, transDict, simDir,
                         deviceOut[i].packetSeq = quant.inverseQuantizer()
                     else:
                         quant.quanData = deviceOut[i]
+                        qMin, qMax = quanParams[i]
+                        quant.min = qMin
+                        quant.max = qMax
                         deviceOut[i] = quant.inverseQuantizer()
                 # quant.quanData      = deviceOut.packetSeq
                 # deviceOut.packetSeq = quant.inverseQuantizer()

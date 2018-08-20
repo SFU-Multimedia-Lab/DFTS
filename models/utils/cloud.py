@@ -48,8 +48,8 @@ def createRMCfg(model, remoteIns, deviceOuts, index):
         modelLayers.insert(0, i)
     modelCfg['layers'] = modelLayers
 
-    for i in modelCfg['layers']:
-        pass
+    # for i in modelCfg['layers']:
+    #     pass
 
     return modelCfg
 
@@ -69,7 +69,9 @@ def remoteModel(model, split, custom_objects=None):
         temp = i['inbound_nodes'][0]
         for j in temp:
             if j[0] in skipNames:
+                jIndex = temp.index(j)
                 j[0] = inNames[skipNames.index(j[0])]
+                temp[jIndex] = j
         i['inbound_nodes'][0] = temp
 
     RMCfg['input_layers'] = []
