@@ -43,7 +43,7 @@ def errorCalc(remoteOut, classValues):
 def createFile(quant, conceal, splitLayer):
     """Creates a data file based on the desired options
     """
-    fileName = ""
+    fileName = splitLayer+"_"
     if quant!="noQuant":
         fileName += f"{quant.nBits}BitQuant_"
     if conceal!="noConceal":

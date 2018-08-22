@@ -39,13 +39,13 @@ Transmission:
   rowsperpacket: 8 #packetization parameter
   quantization:
     numberOfBits: 8
-    include: True
+    include: False
   channel: #type of channel
     RandomLossChannel:
       lossProbability: 0
       include: False
     GilbertChannel: #change to include if no channel is selected
-      lossProbability: 0.5
+      lossProbability: 0.3
       burstLength: 5
       include: False
   concealment: #type of error concealment

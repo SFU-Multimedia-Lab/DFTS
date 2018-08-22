@@ -98,9 +98,11 @@ def runSimulation(model, epochs, splitLayer, task, modelDict, transDict, simDir,
 
         for i in range(len(results)):
             t = [tempRes[i]]
-            t += results[i]
+            [t.append(j) for j in results[i]]
             userRes.append(t)
         dataGen.runThrough = False
         evaluator.runThrough = True
+        evaluator.reset()
+
     print(userRes)
     np.save(fileName, np.array(userRes))

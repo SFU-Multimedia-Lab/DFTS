@@ -16,6 +16,10 @@ class CFeval(object):
 		self.avgAcc  = []
 		self.runThrough = False
 
+	def reset(self):
+		self.avgAcc = []
+
+
 	def evaluate(self, remoteOut, classValues):
 		"""Evaluates the predictions produced by the model in the cloud.
 
@@ -61,7 +65,8 @@ class ODeval(object):
 		self.imageId     = []
 		self.runThrough = False
 
-	
+	def reset(self):
+		self.prediction_results = [list() for _ in range(self.n_classes + 1)]
 
 	def evaluate(self, remoteOut, labels):
 		"""Evaluates the output of the predictions of the model in the cloud.
@@ -84,8 +89,10 @@ class ODeval(object):
 		   containing iou and corresponding mAp values.
 		"""
 		userRes = {}
+		# print(self.iou)
 
 		for i in self.iou:
+			# print(i)
 			userRes[i] = self.iterateOverIOU(self.prediction_results, i, self.imageId)
 		return np.array(list(userRes.items()))
 
