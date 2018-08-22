@@ -17,18 +17,13 @@ def runSimulation(model, epochs, splitLayer, task, modelDict, transDict, simDir,
     Forwaards the data through the model on the device, transmits it, forwards it through the model
     on the cloud and then generates predictions.
     """
-    # task.gatherData()
     dataGen = task.dataFlow()
 
     model = modelLoader(model, modelDict, customObjects)
 
     testModel = BM(model, splitLayer, customObjects)
 
-    # @timing
     testModel.splitModel()
-
-    # print(testModel.deviceModel.summary())
-    # print(testModel.remoteModel.summary())
 
     rowsPerPacket = transDict['rowsperpacket']
     quantization  = transDict['quantization']
@@ -43,12 +38,16 @@ def runSimulation(model, epochs, splitLayer, task, modelDict, transDict, simDir,
     fileName = os.path.join(simDir, fileName)
 
     testData = []
+    userRes = []
 
-    for i in range(epochs):
+    for e in range(epochs):
+        print("Epoch number:{}".format(e))
         while not dataGen.runThrough:
             quanParams = []
+            bI = dataGen.batch_index/dataGen.batch_size
+            print("Batch number:{}".format(bI))
             label, data = dataGen.getNextBatch()
-            print(dataGen.batch_index)
+            # print(dataGen.batch_index)
             deviceOut = deviceSim(testModel.deviceModel, data)
             devOut = []
             if not isinstance(deviceOut, list):
@@ -74,12 +73,9 @@ def runSimulation(model, epochs, splitLayer, task, modelDict, transDict, simDir,
                     lostIndices.append(lI)
                     channel.lossMatrix = []
                 deviceOut = dOut
-                # deviceOut, lossMatrix, receivedIndices, lostIndices = transmit(deviceOut, channel, rowsPerPacket)
-                # channel.lossMatrix = []
             if conceal!='noConceal':
                 for i in range(len(deviceOut)):
                     deviceOut[i].packetSeq = errorConceal(conceal, deviceOut[i].packetSeq, receivedIndices[i], lostIndices[i], rowsPerPacket)
-                # deviceOut.packetSeq = errorConceal(conceal, deviceOut.packetSeq, receivedIndices, lostIndices, rowsPerPacket)
             if quant!='noQuant':
                 for i in range(len(deviceOut)):
                     if channel!='noChannel':
@@ -94,13 +90,17 @@ def runSimulation(model, epochs, splitLayer, task, modelDict, transDict, simDir,
                         quant.min = qMin
                         quant.max = qMax
                         deviceOut[i] = quant.inverseQuantizer()
-                # quant.quanData      = deviceOut.packetSeq
-                # deviceOut.packetSeq = quant.inverseQuantizer()
             remoteOut = remoteSim(testModel.remoteModel, deviceOut, channel)
             evaluator.evaluate(remoteOut, label)
         results = evaluator.simRes()
-        print(results)
-    #     testData.append(np.array([i, results]))
-    #     dataGen.runThrough = False
-    #     evalloc.runThrough = True
-    # np.save(fileName, np.array(testData))
+        # print(results)
+        tempRes = [e]*len(results)
+
+        for i in range(len(results)):
+            t = [tempRes[i]]
+            t += results[i]
+            userRes.append(t)
+        dataGen.runThrough = False
+        evaluator.runThrough = True
+    print(userRes)
+    np.save(fileName, np.array(userRes))

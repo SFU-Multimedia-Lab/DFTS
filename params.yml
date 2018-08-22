@@ -26,19 +26,20 @@ Model:
   kerasmodel: "C:/Users/Harsha/Desktop/ssd_keras/models/ssdModel.h5"
   # kerasmodel: vgg16
   customObjects:
-    module: [keras_layers.keras_layer_AnchorBoxes, keras_layers.keras_layer_DecodeDetections, keras_layers.keras_layer_L2Normalization]
-    class: [AnchorBoxes, DecodeDetections, L2Normalization]
+    module: [keras_layers.keras_layer_AnchorBoxes, keras_layers.keras_layer_DecodeDetections, keras_layers.keras_layer_L2Normalization, keras_layers.keras_ssd_loss]
+    class: [AnchorBoxes, DecodeDetections, L2Normalization, SSDLoss]
+    functions: [False, False, False, compute_loss]
 
 #one of the keras layer names
 SplitLayer:
-  split: fc6
+  split: pool2
 
 #transmission parameters
 Transmission:
   rowsperpacket: 8 #packetization parameter
   quantization:
     numberOfBits: 8
-    include: False
+    include: True
   channel: #type of channel
     RandomLossChannel:
       lossProbability: 0
@@ -54,4 +55,4 @@ Transmission:
       include: False
 
 OutputDir:
-  simDataDir: '../simData/10Loss_2bl'
+  simDataDir: '../simData/0Loss'

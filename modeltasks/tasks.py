@@ -59,8 +59,15 @@ class CFTask(object):
 
 
 class ODTask(object):
-    """docstring for ODTask."""
+    """Initializes the simulator for object detection"""
     def __init__(self, testDir, reshapeDims, batch_size, classes, num_classes):
+        """
+        # Arguments
+            testDir: dictionary conatining the annotations, images and file containing the list of images
+            batch_size: number of images to be forwarded through the model at once
+            reshapeDims: list containing the dimensions of the reshaped image
+            normalize: bool value indicating whether images must be normalized
+        """
         super(ODTask, self).__init__()
         self.testDir     = testDir
         self.reshapeDims = reshapeDims
@@ -71,4 +78,9 @@ class ODTask(object):
         #move parse data function to this class to handle datasets other than PASCAL VOC
 
     def dataFlow(self):
+        """Create a data generator based on the given parameters
+
+        # Returns
+            A Data Generator object.
+        """
         return ODDG(self.testDir, self.reshapeDims, self.batch_size, self.classes, self.num_classes)

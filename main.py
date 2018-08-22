@@ -80,10 +80,15 @@ def configSettings(config):
                     config[i][j] = transDict
     return config
 
-def customImport(modules, classes):
+def customImport(modules, classes, functions):
 	custDict = {}
 	for i in range(len(modules)):
 		module = importlib.import_module(modules[i])
+		if functions[i]:
+			myClass = getattr(module, classes[i])()
+			myClass = getattr(myClass, functions[i])
+			custDict[functions[i]] = myClass
+			continue
 		myClass = getattr(module, classes[i])
 		custDict[classes[i]] = myClass
 	# print(custDict)
@@ -110,7 +115,7 @@ def userInterface():
     ############################################
     modelPath     = paramsDict['Model']['kerasmodel']
     customObjects = paramsDict['Model']['customObjects']
-    customObjects = customImport(customObjects['module'], customObjects['class'])
+    customObjects = customImport(customObjects['module'], customObjects['class'], customObjects['functions'])
 
     modelDict     = {'xception':'Xception', 'vgg16':'VGG16', 'VGG19':'VGG19', 'resnet50':'ResNet50',
                      'inceptionv3':'InceptionV3', 'inceptionresnetv2':'InceptionResnetV2',

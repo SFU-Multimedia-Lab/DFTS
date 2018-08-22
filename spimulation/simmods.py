@@ -91,5 +91,4 @@ def remoteSim(remoteModel ,channelOut, channel):
     for i in range(len(channelOut)):
         data = channelOut[i].packetToData()
         cOut.append(data)
-    # cOut = np.array(cOut)
     return remoteModel.predict(cOut)

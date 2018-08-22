@@ -3,6 +3,17 @@ from keras.layers import Input
 from keras.models import Model
 
 def modelOut(model, layers, index):
+    """Produces the outputs of the model on the device
+
+    # Arguments
+        model: keras model
+        layers: list of strings representing the names of the layer in the model
+        index: location of the layer where the model is split
+
+    # Returns
+        Ouputs of the device model, inputs of the remote model, strings representing the 
+        names of the layers to be skipped
+    """
     device = set(layers[:index+1])
     remote = layers[index+1:]
 
@@ -36,6 +47,17 @@ def createInpCfg(inp):
     return cfg
 
 def createRMCfg(model, remoteIns, deviceOuts, index):
+    """Create the remote model's configuration dectionary
+
+    # Arguments
+        model: keras model
+        remoteIns: input tensors to the remote model
+        deviceOuts: output tensors from the device model
+        index: location of the layer where the model is split
+
+    # Returns
+        Dictionary representing the configuration of the remote model
+    """
     deviceOuts = [i.name for i in deviceOuts]
 #     remoteIns  = [i.name for i in remoteIns]
     modelCfg = model.get_config()
@@ -48,12 +70,19 @@ def createRMCfg(model, remoteIns, deviceOuts, index):
         modelLayers.insert(0, i)
     modelCfg['layers'] = modelLayers
 
-    # for i in modelCfg['layers']:
-    #     pass
-
     return modelCfg
 
 def remoteModel(model, split, custom_objects=None):
+    """Creates a remote model that simulates the one run on the cloud
+
+    # Argument
+        model: keras model
+        split: string represeting the name of the layer where the model is split
+        custom_objects: user defined layers used in the keras model
+
+    # Returns
+        Model representing the one run in the cloud
+    """
     modelLayers = [i.name for i in model.layers]
     index = modelLayers.index(split)
 
