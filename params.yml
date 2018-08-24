@@ -1,30 +1,30 @@
 #represents the task such as classification, segmentation etc
 Task:
-  value: 1
+  value: 0
   epochs: 1
 
 #location of the test images
 TestInput:
   dataset: voc2007
-  batch_size: 4
+  batch_size: 8
   testdir:
     # annotations: []
-    # images: C:/Users/Harsha/Desktop/largeTest
+    images: C:/Users/Harsha/Desktop/largeTest
 
     # annotations: ["C:/Users/Harsha/Desktop/datasets/VOCdevkit/VOC2007/Annotations"]
     # images: ["C:/Users/Harsha/Desktop/datasets/VOCdevkit/VOC2007/JPEGImages"]
     # testNames: ["C:/Users/Harsha/Desktop/datasets/VOCdevkit/VOC2007/ImageSets/Main/test.txt"]
 
-    annotations: ["C:/Users/Harsha/Desktop/miniVOC/Annotations"]
-    images: ["C:/Users/Harsha/Desktop/miniVOC/JPEGImages"]
-    testNames: ["C:/Users/Harsha/Desktop/miniVOC/test.txt"]
+    # annotations: ["C:/Users/Harsha/Desktop/miniVOC/Annotations"]
+    # images: ["C:/Users/Harsha/Desktop/miniVOC/JPEGImages"]
+    # testNames: ["C:/Users/Harsha/Desktop/miniVOC/test.txt"]
 
 taskParams: taskParams.yml
 
 #official keras model or link to a model compiled in keras
 Model:
-  kerasmodel: "C:/Users/Harsha/Desktop/ssd_keras/models/ssdModel.h5"
-  # kerasmodel: vgg16
+  # kerasmodel: "C:/Users/Harsha/Desktop/ssd_keras/models/ssdModel.h5"
+  kerasmodel: vgg16
   customObjects:
     module: [keras_layers.keras_layer_AnchorBoxes, keras_layers.keras_layer_DecodeDetections, keras_layers.keras_layer_L2Normalization, keras_layers.keras_ssd_loss]
     class: [AnchorBoxes, DecodeDetections, L2Normalization, SSDLoss]
@@ -32,14 +32,14 @@ Model:
 
 #one of the keras layer names
 SplitLayer:
-  split: pool2
+  split: block1_pool
 
 #transmission parameters
 Transmission:
   rowsperpacket: 8 #packetization parameter
   quantization:
     numberOfBits: 8
-    include: False
+    include: True
   channel: #type of channel
     RandomLossChannel:
       lossProbability: 0

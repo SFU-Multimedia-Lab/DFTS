@@ -98,7 +98,10 @@ def runSimulation(model, epochs, splitLayer, task, modelDict, transDict, simDir,
 
         for i in range(len(results)):
             t = [tempRes[i]]
-            [t.append(j) for j in results[i]]
+            if isinstance(results[i], list):
+                [t.append(j) for j in results[i]]
+            else:
+                [t.append(results[i])]
             userRes.append(t)
         dataGen.runThrough = False
         evaluator.runThrough = True

@@ -34,7 +34,7 @@ class CFeval(object):
 		"""Returns the mean of the classification accuracies over all batches of predictions.
 		"""
 		self.avgAcc = np.array(self.avgAcc)
-		return np.mean(self.avgAcc)
+		return [np.mean(self.avgAcc)]
 
 
 class ODeval(object):
