@@ -9,6 +9,10 @@ DFTS is a simulator intended for studying deep feature transmission:
 
 - [Overview](#overview)
 - [Creating your environment](#creating-your-environment)
+- [Usage](#usage)
+- [Simulator output](#simulator-output)
+- [Simulator data](#simulator-data)
+- [Contributing](#contributing)
 
 ## Overview
 
