@@ -1,4 +1,4 @@
-from modelTasks.tasks import *
+from modeltasks.tasks import *
 
 def taskAllocater(task, testDir, batch_size, taskParams):
     """Chooses the task based on the user's options

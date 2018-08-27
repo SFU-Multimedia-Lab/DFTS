@@ -1,4 +1,4 @@
-from modelTasks.eval import *
+from modeltasks.eval import *
 
 def evalAllocater(task, metrics, reshapeDims, n_classes):
 	"""Returns an evaluator based on the specified task.
