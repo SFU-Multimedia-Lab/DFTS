@@ -34,7 +34,7 @@ class CFTask(object):
         classImgArr = []
 
         for i in range(len(images)):
-            exp = [list((int(dirList[i].split('\\')[-1]), images[i][j])) for j in range(len(images[i]))]
+            exp = [list((int(dirList[i].split('/')[-1]), images[i][j])) for j in range(len(images[i]))]
             classImgArr.append(exp)
 
         classImgArr = np.array([item for sublist in classImgArr for item in sublist])
