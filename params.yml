@@ -1,15 +1,15 @@
 #represents the task such as classification, segmentation etc
 Task:
-  value: 1
+  value: 0
   epochs: 1
 
 #location of the test images
 TestInput:
-  dataset: reuired
+  dataset: required
   batch_size: 4
   testdir:
     annotations: ["path to xml annotations(for object detection)"]
-    images: ["path to images"]
+    images: C:/Users/Harsha/Desktop/largeTest
     testNames: ["txt file containing image names(for object detection)"]
 
 taskParams: taskParams.yml
