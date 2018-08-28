@@ -28,7 +28,7 @@ def producePlots(paramsDict):
 		for j in range(len(yVals[i])):
 			a = np.load(yVals[i][j])
 			a = np.mean(a, axis=0)
-			print(a)
+			# print(a)
 			temp.append(a[-1])
 		yCoords.append(temp)
 	for i in range(len(yCoords)):
