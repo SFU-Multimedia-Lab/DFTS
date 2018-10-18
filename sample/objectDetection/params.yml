@@ -9,9 +9,9 @@ TestInput:
   dataset: pascal-voc
   batch_size: 4
   testdir:
-    annotations: ["../data/Annotations"]
-    images: "../data/JPEGImages"
-    testNames: ["../data/test.txt"]
+    annotations: ["../data/Annotations"] #path to annotations
+    images: "../data/JPEGImages" #path to jpeg images
+    testNames: ["../data/test.txt"] #path to image names
 
 taskParams: taskParams.yml
 

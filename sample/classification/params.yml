@@ -9,7 +9,7 @@ TestInput:
   batch_size: 4
   testdir:
     annotations: []
-    images: ../largeTest
+    images: ../largeTest #path to images
     testNames: []
 
 taskParams: taskParams.yml
