@@ -5,12 +5,12 @@ Task:
 
 #location of the test images
 TestInput:
-  dataset: required
+  dataset: imagenet
   batch_size: 4
   testdir:
-    annotations: ["path to xml annotations(for object detection)"]
-    images: path to images
-    testNames: ["txt file containing image names(for object detection)"]
+    annotations: []
+    images: ../largeTest
+    testNames: []
 
 taskParams: taskParams.yml
 
@@ -24,7 +24,7 @@ Model:
 
 #one of the keras layer names
 SplitLayer:
-  split: keras layer name 
+  split: block1_pool
 
 #transmission parameters
 Transmission:
