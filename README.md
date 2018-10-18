@@ -75,6 +75,8 @@ The taskParams configuration file consists of the following paramters for each s
 
 Currently, only the parameters provided in the configuration files are supported. The simulation will break if any attempt is made to change the name of the parameters.
 
+Sample configuration files for classification and object detection are provided in the sample folder.
+
 ## Simulator output
 
 The simulator outputs timing and indexing information to the terminal.
