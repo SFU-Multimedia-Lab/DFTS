@@ -1,0 +1,51 @@
+#represents the task such as classification, segmentation etc
+Task:
+  value: 1
+  epochs: 1
+
+#location of the test images
+#object detection currently supports only the pascal voc dataset
+TestInput:
+  dataset: pascal-voc
+  batch_size: 4
+  testdir:
+    annotations: ["../data/Annotations"]
+    images: "../data/JPEGImages"
+    testNames: ["../data/test.txt"]
+
+taskParams: taskParams.yml
+
+#official keras model or link to a model compiled in keras
+Model:
+  kerasmodel: ../models/ssd300.h5 #must contain both the architecture and the weights
+  customObjects:
+    module: [keras_layers.keras_layer_AnchorBoxes, keras_layers.keras_layer_DecodeDetections, keras_layers.keras_layer_L2Normalization, keras_layers.keras_ssd_loss]
+    class: [AnchorBoxes, DecodeDetections, L2Normalization, SSDLoss]
+    functions: [False, False, False, compute_loss]
+
+#one of the keras layer names
+SplitLayer:
+  split: keras layer name 
+
+#transmission parameters
+Transmission:
+  rowsperpacket: 8 #packetization parameter
+  quantization:
+    numberOfBits: 8
+    include: True
+  channel: #type of channel
+    RandomLossChannel:
+      lossProbability: 0
+      include: False
+    GilbertChannel: #change to include if no channel is selected
+      lossProbability: 0.3
+      burstLength: 5
+      include: False
+  concealment: #type of error concealment
+    Linear:
+      include: False
+    nearestNeighbours:
+      include: False
+
+OutputDir:
+  simDataDir: '../simData/0Loss'
