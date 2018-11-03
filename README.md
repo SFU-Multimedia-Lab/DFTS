@@ -82,6 +82,14 @@ Examples on how to organize data for input to the simulator can be found as foll
 * [Classification](https://drive.google.com/open?id=1R4Zn6UaZlADqHeKM7ij1k-G-STPkoPN_)
 * [Object Detection](https://drive.google.com/open?id=1oBTJ_fIZKwfLfY4Ew5ZPwEPtGkMdYRgh)
 
+A small subset of these images can be found in the repository itself. First switch to the test-images branch by executing the following:
+
+```bash
+git checkout test-images
+```
+
+Navigate to the sampleImages folder contained in the sample directory.
+
 ## Simulator output
 
 The simulator outputs timing and indexing information to the terminal.
