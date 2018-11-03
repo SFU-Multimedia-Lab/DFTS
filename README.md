@@ -77,6 +77,11 @@ Currently, only the parameters provided in the configuration files are supported
 
 Sample configuration files for classification and object detection are provided in the sample folder.
 
+Examples on how to organize data for input to the simulator can be found as follows:
+
+* [Classification](https://drive.google.com/open?id=1R4Zn6UaZlADqHeKM7ij1k-G-STPkoPN_)
+* [Object Detection](https://drive.google.com/open?id=1oBTJ_fIZKwfLfY4Ew5ZPwEPtGkMdYRgh)
+
 ## Simulator output
 
 The simulator outputs timing and indexing information to the terminal.
