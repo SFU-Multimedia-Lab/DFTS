@@ -1,0 +1,665 @@
+Epoch number:0
+Batch number:0.0
+Device simulation Complete in 0.7734036445617676!!
+bit quantizer complete in 0.014631271362304688!!
+Batch number:1.0
+Device simulation Complete in 0.018845796585083008!!
+bit quantizer complete in 0.013045072555541992!!
+Batch number:2.0
+Device simulation Complete in 0.01629018783569336!!
+bit quantizer complete in 0.014536142349243164!!
+Batch number:3.0
+Device simulation Complete in 0.02106928825378418!!
+bit quantizer complete in 0.012917041778564453!!
+Batch number:4.0
+Device simulation Complete in 0.021453142166137695!!
+bit quantizer complete in 0.013639450073242188!!
+Batch number:5.0
+Device simulation Complete in 0.01493692398071289!!
+bit quantizer complete in 0.013469457626342773!!
+Batch number:6.0
+Device simulation Complete in 0.016884565353393555!!
+bit quantizer complete in 0.012950897216796875!!
+Batch number:7.0
+Device simulation Complete in 0.015959978103637695!!
+bit quantizer complete in 0.014354944229125977!!
+Batch number:8.0
+Device simulation Complete in 0.015902280807495117!!
+bit quantizer complete in 0.014306783676147461!!
+Batch number:9.0
+Device simulation Complete in 0.017247438430786133!!
+bit quantizer complete in 0.013362646102905273!!
+Batch number:10.0
+Device simulation Complete in 0.015585184097290039!!
+bit quantizer complete in 0.015323638916015625!!
+Batch number:11.0
+Device simulation Complete in 0.016038894653320312!!
+bit quantizer complete in 0.013947486877441406!!
+Batch number:12.0
+Device simulation Complete in 0.01700878143310547!!
+bit quantizer complete in 0.013120651245117188!!
+Batch number:13.0
+Device simulation Complete in 0.01636981964111328!!
+bit quantizer complete in 0.013987541198730469!!
+Batch number:14.0
+Device simulation Complete in 0.01951003074645996!!
+bit quantizer complete in 0.012421369552612305!!
+Batch number:15.0
+Device simulation Complete in 0.01569843292236328!!
+bit quantizer complete in 0.012936115264892578!!
+Batch number:16.0
+Device simulation Complete in 0.017657756805419922!!
+bit quantizer complete in 0.012447357177734375!!
+Batch number:17.0
+Device simulation Complete in 0.01800370216369629!!
+bit quantizer complete in 0.013351202011108398!!
+Batch number:18.0
+Device simulation Complete in 0.016338109970092773!!
+bit quantizer complete in 0.013139009475708008!!
+Batch number:19.0
+Device simulation Complete in 0.017697811126708984!!
+bit quantizer complete in 0.014290809631347656!!
+Batch number:20.0
+Device simulation Complete in 0.015850067138671875!!
+bit quantizer complete in 0.013939619064331055!!
+Batch number:21.0
+Device simulation Complete in 0.017368316650390625!!
+bit quantizer complete in 0.012537479400634766!!
+Batch number:22.0
+Device simulation Complete in 0.01700115203857422!!
+bit quantizer complete in 0.013458728790283203!!
+Batch number:23.0
+Device simulation Complete in 0.015550851821899414!!
+bit quantizer complete in 0.013187646865844727!!
+Batch number:24.0
+Device simulation Complete in 0.015508413314819336!!
+bit quantizer complete in 0.013348579406738281!!
+Batch number:25.0
+Device simulation Complete in 0.01597118377685547!!
+bit quantizer complete in 0.014588356018066406!!
+Batch number:26.0
+Device simulation Complete in 0.016418933868408203!!
+bit quantizer complete in 0.014725446701049805!!
+Batch number:27.0
+Device simulation Complete in 0.016869068145751953!!
+bit quantizer complete in 0.01365518569946289!!
+Batch number:28.0
+Device simulation Complete in 0.016038179397583008!!
+bit quantizer complete in 0.012683391571044922!!
+Batch number:29.0
+Device simulation Complete in 0.017183303833007812!!
+bit quantizer complete in 0.012475728988647461!!
+Batch number:30.0
+Device simulation Complete in 0.015191793441772461!!
+bit quantizer complete in 0.013201475143432617!!
+Batch number:31.0
+Device simulation Complete in 0.015084505081176758!!
+bit quantizer complete in 0.013036251068115234!!
+Batch number:32.0
+Device simulation Complete in 0.016709566116333008!!
+bit quantizer complete in 0.01433253288269043!!
+Batch number:33.0
+Device simulation Complete in 0.015262842178344727!!
+bit quantizer complete in 0.013540983200073242!!
+Batch number:34.0
+Device simulation Complete in 0.01662421226501465!!
+bit quantizer complete in 0.012985706329345703!!
+Batch number:35.0
+Device simulation Complete in 0.014833688735961914!!
+bit quantizer complete in 0.01285243034362793!!
+Batch number:36.0
+Device simulation Complete in 0.016445398330688477!!
+bit quantizer complete in 0.013643980026245117!!
+Batch number:37.0
+Device simulation Complete in 0.016605615615844727!!
+bit quantizer complete in 0.013381004333496094!!
+Batch number:38.0
+Device simulation Complete in 0.016243934631347656!!
+bit quantizer complete in 0.01457071304321289!!
+Batch number:39.0
+Device simulation Complete in 0.015606403350830078!!
+bit quantizer complete in 0.013588428497314453!!
+Batch number:40.0
+Device simulation Complete in 0.016370534896850586!!
+bit quantizer complete in 0.01427912712097168!!
+Batch number:41.0
+Device simulation Complete in 0.016954660415649414!!
+bit quantizer complete in 0.012951850891113281!!
+Batch number:42.0
+Device simulation Complete in 0.021933794021606445!!
+bit quantizer complete in 0.012755870819091797!!
+Batch number:43.0
+Device simulation Complete in 0.022999286651611328!!
+bit quantizer complete in 0.013155698776245117!!
+Batch number:44.0
+Device simulation Complete in 0.0267333984375!!
+bit quantizer complete in 0.012542247772216797!!
+Batch number:45.0
+Device simulation Complete in 0.02240610122680664!!
+bit quantizer complete in 0.013224363327026367!!
+Batch number:46.0
+Device simulation Complete in 0.019762754440307617!!
+bit quantizer complete in 0.013599634170532227!!
+Batch number:47.0
+Device simulation Complete in 0.015708446502685547!!
+bit quantizer complete in 0.012012958526611328!!
+Batch number:48.0
+Device simulation Complete in 0.01664876937866211!!
+bit quantizer complete in 0.013384342193603516!!
+Batch number:49.0
+Device simulation Complete in 0.016522884368896484!!
+bit quantizer complete in 0.013695240020751953!!
+Batch number:50.0
+Device simulation Complete in 0.015914440155029297!!
+bit quantizer complete in 0.01375889778137207!!
+Batch number:51.0
+Device simulation Complete in 0.015409231185913086!!
+bit quantizer complete in 0.013703107833862305!!
+Batch number:52.0
+Device simulation Complete in 0.015583276748657227!!
+bit quantizer complete in 0.014535188674926758!!
+Batch number:53.0
+Device simulation Complete in 0.015143156051635742!!
+bit quantizer complete in 0.013167619705200195!!
+Batch number:54.0
+Device simulation Complete in 0.015304327011108398!!
+bit quantizer complete in 0.013522863388061523!!
+Batch number:55.0
+Device simulation Complete in 0.01487874984741211!!
+bit quantizer complete in 0.013918638229370117!!
+Batch number:56.0
+Device simulation Complete in 0.01549530029296875!!
+bit quantizer complete in 0.014142990112304688!!
+Batch number:57.0
+Device simulation Complete in 0.015079259872436523!!
+bit quantizer complete in 0.013004541397094727!!
+Batch number:58.0
+Device simulation Complete in 0.01582193374633789!!
+bit quantizer complete in 0.015208244323730469!!
+Batch number:59.0
+Device simulation Complete in 0.016736745834350586!!
+bit quantizer complete in 0.013036251068115234!!
+Batch number:60.0
+Device simulation Complete in 0.017337560653686523!!
+bit quantizer complete in 0.014348745346069336!!
+Batch number:61.0
+Device simulation Complete in 0.01657724380493164!!
+bit quantizer complete in 0.014568567276000977!!
+Batch number:62.0
+Device simulation Complete in 0.015310287475585938!!
+bit quantizer complete in 0.014209747314453125!!
+Batch number:63.0
+Device simulation Complete in 0.01836848258972168!!
+bit quantizer complete in 0.014152050018310547!!
+Batch number:64.0
+Device simulation Complete in 0.015240907669067383!!
+bit quantizer complete in 0.011304140090942383!!
+Batch number:65.0
+Device simulation Complete in 0.015284538269042969!!
+bit quantizer complete in 0.013131856918334961!!
+Batch number:66.0
+Device simulation Complete in 0.01695394515991211!!
+bit quantizer complete in 0.013257026672363281!!
+Batch number:67.0
+Device simulation Complete in 0.015619754791259766!!
+bit quantizer complete in 0.014124870300292969!!
+Batch number:68.0
+Device simulation Complete in 0.01628732681274414!!
+bit quantizer complete in 0.013840436935424805!!
+Batch number:69.0
+Device simulation Complete in 0.014891386032104492!!
+bit quantizer complete in 0.01308584213256836!!
+Batch number:70.0
+Device simulation Complete in 0.016614198684692383!!
+bit quantizer complete in 0.013197898864746094!!
+Batch number:71.0
+Device simulation Complete in 0.01685953140258789!!
+bit quantizer complete in 0.014495849609375!!
+Batch number:72.0
+Device simulation Complete in 0.016781091690063477!!
+bit quantizer complete in 0.013157129287719727!!
+Batch number:73.0
+Device simulation Complete in 0.01875615119934082!!
+bit quantizer complete in 0.012867927551269531!!
+Batch number:74.0
+Device simulation Complete in 0.015958070755004883!!
+bit quantizer complete in 0.014222860336303711!!
+Batch number:75.0
+Device simulation Complete in 0.016881227493286133!!
+bit quantizer complete in 0.013036727905273438!!
+Batch number:76.0
+Device simulation Complete in 0.01636362075805664!!
+bit quantizer complete in 0.013309001922607422!!
+Batch number:77.0
+Device simulation Complete in 0.015637874603271484!!
+bit quantizer complete in 0.013518810272216797!!
+Batch number:78.0
+Device simulation Complete in 0.015962839126586914!!
+bit quantizer complete in 0.013158798217773438!!
+Batch number:79.0
+Device simulation Complete in 0.016315937042236328!!
+bit quantizer complete in 0.013204813003540039!!
+Batch number:80.0
+Device simulation Complete in 0.014977455139160156!!
+bit quantizer complete in 0.014399290084838867!!
+Batch number:81.0
+Device simulation Complete in 0.015216827392578125!!
+bit quantizer complete in 0.01442861557006836!!
+Batch number:82.0
+Device simulation Complete in 0.022728681564331055!!
+bit quantizer complete in 0.013066291809082031!!
+Batch number:83.0
+Device simulation Complete in 0.015603303909301758!!
+bit quantizer complete in 0.013468027114868164!!
+Batch number:84.0
+Device simulation Complete in 0.023853540420532227!!
+bit quantizer complete in 0.013674497604370117!!
+Batch number:85.0
+Device simulation Complete in 0.01708364486694336!!
+bit quantizer complete in 0.013097047805786133!!
+Batch number:86.0
+Device simulation Complete in 0.016678571701049805!!
+bit quantizer complete in 0.012250185012817383!!
+Batch number:87.0
+Device simulation Complete in 0.016673564910888672!!
+bit quantizer complete in 0.012625455856323242!!
+Batch number:88.0
+Device simulation Complete in 0.017038822174072266!!
+bit quantizer complete in 0.014367818832397461!!
+Batch number:89.0
+Device simulation Complete in 0.017830610275268555!!
+bit quantizer complete in 0.012679100036621094!!
+Batch number:90.0
+Device simulation Complete in 0.015237569808959961!!
+bit quantizer complete in 0.012945413589477539!!
+Batch number:91.0
+Device simulation Complete in 0.015895605087280273!!
+bit quantizer complete in 0.013796329498291016!!
+Batch number:92.0
+Device simulation Complete in 0.015573740005493164!!
+bit quantizer complete in 0.014167308807373047!!
+Batch number:93.0
+Device simulation Complete in 0.015282392501831055!!
+bit quantizer complete in 0.012814521789550781!!
+Batch number:94.0
+Device simulation Complete in 0.01545572280883789!!
+bit quantizer complete in 0.014117717742919922!!
+Batch number:95.0
+Device simulation Complete in 0.02206563949584961!!
+bit quantizer complete in 0.013563871383666992!!
+Batch number:96.0
+Device simulation Complete in 0.01537942886352539!!
+bit quantizer complete in 0.01361227035522461!!
+Batch number:97.0
+Device simulation Complete in 0.016867637634277344!!
+bit quantizer complete in 0.01360464096069336!!
+Batch number:98.0
+Device simulation Complete in 0.015044450759887695!!
+bit quantizer complete in 0.013063430786132812!!
+Batch number:99.0
+Device simulation Complete in 0.015513896942138672!!
+bit quantizer complete in 0.013473749160766602!!
+Batch number:100.0
+Device simulation Complete in 0.015332221984863281!!
+bit quantizer complete in 0.013282299041748047!!
+Batch number:101.0
+Device simulation Complete in 0.016289472579956055!!
+bit quantizer complete in 0.014049768447875977!!
+Batch number:102.0
+Device simulation Complete in 0.015264034271240234!!
+bit quantizer complete in 0.013255119323730469!!
+Batch number:103.0
+Device simulation Complete in 0.015342473983764648!!
+bit quantizer complete in 0.013663053512573242!!
+Batch number:104.0
+Device simulation Complete in 0.015173673629760742!!
+bit quantizer complete in 0.013809919357299805!!
+Batch number:105.0
+Device simulation Complete in 0.016276121139526367!!
+bit quantizer complete in 0.013817071914672852!!
+Batch number:106.0
+Device simulation Complete in 0.01479339599609375!!
+bit quantizer complete in 0.012940406799316406!!
+Batch number:107.0
+Device simulation Complete in 0.02096247673034668!!
+bit quantizer complete in 0.012617826461791992!!
+Batch number:108.0
+Device simulation Complete in 0.01603841781616211!!
+bit quantizer complete in 0.013577699661254883!!
+Batch number:109.0
+Device simulation Complete in 0.016387462615966797!!
+bit quantizer complete in 0.01447153091430664!!
+Batch number:110.0
+Device simulation Complete in 0.01727581024169922!!
+bit quantizer complete in 0.014384746551513672!!
+Batch number:111.0
+Device simulation Complete in 0.017176389694213867!!
+bit quantizer complete in 0.014873266220092773!!
+Batch number:112.0
+Device simulation Complete in 0.016592979431152344!!
+bit quantizer complete in 0.014368295669555664!!
+Batch number:113.0
+Device simulation Complete in 0.01577901840209961!!
+bit quantizer complete in 0.01315760612487793!!
+Batch number:114.0
+Device simulation Complete in 0.01753687858581543!!
+bit quantizer complete in 0.014264106750488281!!
+Batch number:115.0
+Device simulation Complete in 0.015291213989257812!!
+bit quantizer complete in 0.012710809707641602!!
+Batch number:116.0
+Device simulation Complete in 0.015500307083129883!!
+bit quantizer complete in 0.01327061653137207!!
+Batch number:117.0
+Device simulation Complete in 0.01636648178100586!!
+bit quantizer complete in 0.014156579971313477!!
+Batch number:118.0
+Device simulation Complete in 0.0168917179107666!!
+bit quantizer complete in 0.014435529708862305!!
+Batch number:119.0
+Device simulation Complete in 0.019572019577026367!!
+bit quantizer complete in 0.011662483215332031!!
+Batch number:120.0
+Device simulation Complete in 0.014556884765625!!
+bit quantizer complete in 0.012735128402709961!!
+Batch number:121.0
+Device simulation Complete in 0.016038894653320312!!
+bit quantizer complete in 0.014945507049560547!!
+Batch number:122.0
+Device simulation Complete in 0.016477108001708984!!
+bit quantizer complete in 0.013719320297241211!!
+Batch number:123.0
+Device simulation Complete in 0.0167696475982666!!
+bit quantizer complete in 0.014739274978637695!!
+Batch number:124.0
+Device simulation Complete in 0.020657062530517578!!
+bit quantizer complete in 0.01258707046508789!!
+Batch number:125.0
+Device simulation Complete in 0.016059160232543945!!
+bit quantizer complete in 0.014058828353881836!!
+Batch number:126.0
+Device simulation Complete in 0.016693592071533203!!
+bit quantizer complete in 0.012298107147216797!!
+Batch number:127.0
+Device simulation Complete in 0.015821218490600586!!
+bit quantizer complete in 0.014273643493652344!!
+Batch number:128.0
+Device simulation Complete in 0.019201040267944336!!
+bit quantizer complete in 0.012673377990722656!!
+Batch number:129.0
+Device simulation Complete in 0.014921903610229492!!
+bit quantizer complete in 0.01354527473449707!!
+Batch number:130.0
+Device simulation Complete in 0.016101837158203125!!
+bit quantizer complete in 0.014009237289428711!!
+Batch number:131.0
+Device simulation Complete in 0.015226125717163086!!
+bit quantizer complete in 0.012873649597167969!!
+Batch number:132.0
+Device simulation Complete in 0.015422344207763672!!
+bit quantizer complete in 0.013622760772705078!!
+Batch number:133.0
+Device simulation Complete in 0.016512393951416016!!
+bit quantizer complete in 0.012854337692260742!!
+Batch number:134.0
+Device simulation Complete in 0.0157468318939209!!
+bit quantizer complete in 0.013785362243652344!!
+Batch number:135.0
+Device simulation Complete in 0.016161680221557617!!
+bit quantizer complete in 0.014741659164428711!!
+Batch number:136.0
+Device simulation Complete in 0.015459060668945312!!
+bit quantizer complete in 0.013586044311523438!!
+Batch number:137.0
+Device simulation Complete in 0.019226789474487305!!
+bit quantizer complete in 0.013057708740234375!!
+Batch number:138.0
+Device simulation Complete in 0.0162351131439209!!
+bit quantizer complete in 0.0136566162109375!!
+Batch number:139.0
+Device simulation Complete in 0.015143871307373047!!
+bit quantizer complete in 0.013229608535766602!!
+Batch number:140.0
+Device simulation Complete in 0.015496253967285156!!
+bit quantizer complete in 0.013917207717895508!!
+Batch number:141.0
+Device simulation Complete in 0.01618170738220215!!
+bit quantizer complete in 0.013774394989013672!!
+Batch number:142.0
+Device simulation Complete in 0.016862869262695312!!
+bit quantizer complete in 0.014832258224487305!!
+Batch number:143.0
+Device simulation Complete in 0.016570329666137695!!
+bit quantizer complete in 0.01519918441772461!!
+Batch number:144.0
+Device simulation Complete in 0.015761375427246094!!
+bit quantizer complete in 0.014644384384155273!!
+Batch number:145.0
+Device simulation Complete in 0.01948380470275879!!
+bit quantizer complete in 0.014999628067016602!!
+Batch number:146.0
+Device simulation Complete in 0.018276453018188477!!
+bit quantizer complete in 0.012797832489013672!!
+Batch number:147.0
+Device simulation Complete in 0.016832351684570312!!
+bit quantizer complete in 0.012838602066040039!!
+Batch number:148.0
+Device simulation Complete in 0.017694950103759766!!
+bit quantizer complete in 0.013199567794799805!!
+Batch number:149.0
+Device simulation Complete in 0.01583719253540039!!
+bit quantizer complete in 0.013946771621704102!!
+Batch number:150.0
+Device simulation Complete in 0.01623678207397461!!
+bit quantizer complete in 0.012808799743652344!!
+Batch number:151.0
+Device simulation Complete in 0.015464067459106445!!
+bit quantizer complete in 0.01335287094116211!!
+Batch number:152.0
+Device simulation Complete in 0.01492619514465332!!
+bit quantizer complete in 0.012963056564331055!!
+Batch number:153.0
+Device simulation Complete in 0.015557289123535156!!
+bit quantizer complete in 0.013822555541992188!!
+Batch number:154.0
+Device simulation Complete in 0.017506837844848633!!
+bit quantizer complete in 0.013885974884033203!!
+Batch number:155.0
+Device simulation Complete in 0.020369768142700195!!
+bit quantizer complete in 0.01219320297241211!!
+Batch number:156.0
+Device simulation Complete in 0.01738119125366211!!
+bit quantizer complete in 0.013640165328979492!!
+Batch number:157.0
+Device simulation Complete in 0.015468120574951172!!
+bit quantizer complete in 0.012740373611450195!!
+Batch number:158.0
+Device simulation Complete in 0.015094280242919922!!
+bit quantizer complete in 0.01357889175415039!!
+Batch number:159.0
+Device simulation Complete in 0.016167402267456055!!
+bit quantizer complete in 0.013725042343139648!!
+Batch number:160.0
+Device simulation Complete in 0.015638351440429688!!
+bit quantizer complete in 0.013143777847290039!!
+Batch number:161.0
+Device simulation Complete in 0.016299962997436523!!
+bit quantizer complete in 0.013951778411865234!!
+Batch number:162.0
+Device simulation Complete in 0.0161895751953125!!
+bit quantizer complete in 0.0137481689453125!!
+Batch number:163.0
+Device simulation Complete in 0.015439033508300781!!
+bit quantizer complete in 0.01430821418762207!!
+Batch number:164.0
+Device simulation Complete in 0.015805959701538086!!
+bit quantizer complete in 0.014070272445678711!!
+Batch number:165.0
+Device simulation Complete in 0.017021656036376953!!
+bit quantizer complete in 0.01420140266418457!!
+Batch number:166.0
+Device simulation Complete in 0.01699972152709961!!
+bit quantizer complete in 0.012951135635375977!!
+Batch number:167.0
+Device simulation Complete in 0.015003204345703125!!
+bit quantizer complete in 0.012977838516235352!!
+Batch number:168.0
+Device simulation Complete in 0.015349149703979492!!
+bit quantizer complete in 0.012466907501220703!!
+Batch number:169.0
+Device simulation Complete in 0.017707347869873047!!
+bit quantizer complete in 0.012176275253295898!!
+Batch number:170.0
+Device simulation Complete in 0.01606464385986328!!
+bit quantizer complete in 0.012997627258300781!!
+Batch number:171.0
+Device simulation Complete in 0.026427745819091797!!
+bit quantizer complete in 0.01314234733581543!!
+Batch number:172.0
+Device simulation Complete in 0.01620340347290039!!
+bit quantizer complete in 0.012893199920654297!!
+Batch number:173.0
+Device simulation Complete in 0.015946388244628906!!
+bit quantizer complete in 0.013801097869873047!!
+Batch number:174.0
+Device simulation Complete in 0.015475273132324219!!
+bit quantizer complete in 0.012659072875976562!!
+Batch number:175.0
+Device simulation Complete in 0.017450332641601562!!
+bit quantizer complete in 0.014332771301269531!!
+Batch number:176.0
+Device simulation Complete in 0.016831636428833008!!
+bit quantizer complete in 0.013791561126708984!!
+Batch number:177.0
+Device simulation Complete in 0.017662763595581055!!
+bit quantizer complete in 0.013756513595581055!!
+Batch number:178.0
+Device simulation Complete in 0.016451120376586914!!
+bit quantizer complete in 0.014313936233520508!!
+Batch number:179.0
+Device simulation Complete in 0.023741722106933594!!
+bit quantizer complete in 0.011372566223144531!!
+Batch number:180.0
+Device simulation Complete in 0.024354934692382812!!
+bit quantizer complete in 0.012886285781860352!!
+Batch number:181.0
+Device simulation Complete in 0.023351192474365234!!
+bit quantizer complete in 0.013150930404663086!!
+Batch number:182.0
+Device simulation Complete in 0.024820566177368164!!
+bit quantizer complete in 0.013329029083251953!!
+Batch number:183.0
+Device simulation Complete in 0.02435612678527832!!
+bit quantizer complete in 0.013023138046264648!!
+Batch number:184.0
+Device simulation Complete in 0.015511035919189453!!
+bit quantizer complete in 0.013639211654663086!!
+Batch number:185.0
+Device simulation Complete in 0.017019271850585938!!
+bit quantizer complete in 0.014178752899169922!!
+Batch number:186.0
+Device simulation Complete in 0.0221402645111084!!
+bit quantizer complete in 0.01668572425842285!!
+Batch number:187.0
+Device simulation Complete in 0.01926708221435547!!
+bit quantizer complete in 0.012250900268554688!!
+Batch number:188.0
+Device simulation Complete in 0.01687932014465332!!
+bit quantizer complete in 0.012218952178955078!!
+Batch number:189.0
+Device simulation Complete in 0.015354633331298828!!
+bit quantizer complete in 0.014713287353515625!!
+Batch number:190.0
+Device simulation Complete in 0.01642751693725586!!
+bit quantizer complete in 0.013796091079711914!!
+Batch number:191.0
+Device simulation Complete in 0.015765666961669922!!
+bit quantizer complete in 0.015794992446899414!!
+Batch number:192.0
+Device simulation Complete in 0.017253875732421875!!
+bit quantizer complete in 0.014783859252929688!!
+Batch number:193.0
+Device simulation Complete in 0.01611948013305664!!
+bit quantizer complete in 0.01622629165649414!!
+Batch number:194.0
+Device simulation Complete in 0.017554521560668945!!
+bit quantizer complete in 0.014414787292480469!!
+Batch number:195.0
+Device simulation Complete in 0.018951416015625!!
+bit quantizer complete in 0.013521194458007812!!
+Batch number:196.0
+Device simulation Complete in 0.01687026023864746!!
+bit quantizer complete in 0.012940645217895508!!
+Batch number:197.0
+Device simulation Complete in 0.018139362335205078!!
+bit quantizer complete in 0.013019561767578125!!
+Batch number:198.0
+Device simulation Complete in 0.016007661819458008!!
+bit quantizer complete in 0.013698577880859375!!
+Batch number:199.0
+Device simulation Complete in 0.016609907150268555!!
+bit quantizer complete in 0.01281881332397461!!
+Batch number:200.0
+Device simulation Complete in 0.01625990867614746!!
+bit quantizer complete in 0.013741731643676758!!
+Batch number:201.0
+Device simulation Complete in 0.019203662872314453!!
+bit quantizer complete in 0.013911247253417969!!
+Batch number:202.0
+Device simulation Complete in 0.016448259353637695!!
+bit quantizer complete in 0.013648748397827148!!
+Batch number:203.0
+Device simulation Complete in 0.015825986862182617!!
+bit quantizer complete in 0.013196468353271484!!
+Batch number:204.0
+Device simulation Complete in 0.01557469367980957!!
+bit quantizer complete in 0.012693405151367188!!
+Batch number:205.0
+Device simulation Complete in 0.016949176788330078!!
+bit quantizer complete in 0.015650510787963867!!
+Batch number:206.0
+Device simulation Complete in 0.01708078384399414!!
+bit quantizer complete in 0.01580214500427246!!
+Batch number:207.0
+Device simulation Complete in 0.01848769187927246!!
+bit quantizer complete in 0.014549970626831055!!
+Batch number:208.0
+Device simulation Complete in 0.018637657165527344!!
+bit quantizer complete in 0.013733148574829102!!
+Batch number:209.0
+Device simulation Complete in 0.017070770263671875!!
+bit quantizer complete in 0.013371944427490234!!
+Batch number:210.0
+Device simulation Complete in 0.016597270965576172!!
+bit quantizer complete in 0.014250040054321289!!
+Batch number:211.0
+Device simulation Complete in 0.01650691032409668!!
+bit quantizer complete in 0.01458287239074707!!
+Batch number:212.0
+Device simulation Complete in 0.017840862274169922!!
+bit quantizer complete in 0.013580799102783203!!
+Batch number:213.0
+Device simulation Complete in 0.01467442512512207!!
+bit quantizer complete in 0.01428365707397461!!
+Batch number:214.0
+Device simulation Complete in 0.017352581024169922!!
+bit quantizer complete in 0.013495206832885742!!
+Batch number:215.0
+Device simulation Complete in 0.016390562057495117!!
+bit quantizer complete in 0.01470637321472168!!
+Batch number:216.0
+Device simulation Complete in 0.019169092178344727!!
+bit quantizer complete in 0.014405488967895508!!
+Batch number:217.0
+Device simulation Complete in 0.017180442810058594!!
+bit quantizer complete in 0.013763189315795898!!
+Batch number:218.0
+Device simulation Complete in 0.016046524047851562!!
+bit quantizer complete in 0.014414072036743164!!
+Batch number:219.0
+Device simulation Complete in 0.0168459415435791!!
+bit quantizer complete in 0.012866735458374023!!
+Batch number:220.0
+Device simulation Complete in 0.13832807540893555!!
+bit quantizer complete in 0.0065348148345947266!!
+[[0, 0.8246606334841629]]
