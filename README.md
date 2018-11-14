@@ -43,6 +43,7 @@ Install the required dependencies.
 ```bash
 pip install -r requirements.txt
 ```
+If faced with any problems, contents after '==' after each library name can be deleted and run again.
 
 ## Usage
 
