@@ -52,7 +52,7 @@ def selectParamConfig(p, paramDict):
             index = i
     try:
         if sum>1:
-            raise ParserError(f"Multiple configurations selected for {p}", sum)
+            raise ParserError("Multiple configurations selected for {}".format(p), sum)
     except Exception as e:
         raise
     else:
