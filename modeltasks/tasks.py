@@ -28,7 +28,7 @@ class CFTask(object):
         """
         dirList = os.listdir(self.testDir)
         self.numClasses = len(dirList)
-        dirList = [os.path.join(self.testDir, i) for i in dirList]
+        dirList = [os.path.join(self.testDir, i).replace("\\", "/") for i in dirList]
         images  = [absoluteFilePaths(i) for i in dirList]
 
         classImgArr = []

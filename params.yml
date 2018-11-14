@@ -8,9 +8,9 @@ TestInput:
   dataset: required
   batch_size: 4
   testdir:
-    annotations: ["path to xml annotations(for object detection)"]
-    images: path to images
-    testNames: ["txt file containing image names(for object detection)"]
+    annotations: []
+    images: sample/sampleImages/smallCF
+    testNames: []
 
 taskParams: taskParams.yml
 
@@ -24,14 +24,14 @@ Model:
 
 #one of the keras layer names
 SplitLayer:
-  split: keras layer name 
+  split: block1_pool 
 
 #transmission parameters
 Transmission:
   rowsperpacket: 8 #packetization parameter
   quantization:
     numberOfBits: 8
-    include: True
+    include: False
   channel: #type of channel
     RandomLossChannel:
       lossProbability: 0
