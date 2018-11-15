@@ -1,9 +1,9 @@
 # DFTS: Deep Feature Transmission Simulator
 ---------------------------------
 
-DFTS is a simulator intended for studying deep feature transmission:
-- Over unreliable channels
-- The effect of packet loss on the deep model's accuracy
+DFTS is a simulator intended for studying deep feature transmission over unreliable channels. If you use this simulator in your work, please cite the following paper: 
+
+H. Unnibhavi, H. Choi, S. R. Alvar, and I. V. Bajić, "DFTS: Deep Feature Transmission Simulator," demo paper at *IEEE MMSP'18*, Vancouver, BC, Aug. 2018. [link](https://www.researchgate.net/publication/327477545_DFTS_Deep_Feature_Transmission_Simulator)
 
 ## Contents
 
