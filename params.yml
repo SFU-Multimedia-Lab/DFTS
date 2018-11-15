@@ -47,4 +47,4 @@ Transmission:
       include: False
 
 OutputDir:
-  simDataDir: '../simData/0Loss'
+  simDataDir: 'simData/0Loss'
