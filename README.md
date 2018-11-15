@@ -66,7 +66,7 @@ The params configuration file consists of the following:
 | **Model** | <ul><li>kerasmodel: official keras model or path to h5 file containing both weights and architecture</li><li>customObjects: custom modules, classes, functions used to construct the model</li></ul> | <ul> <li>vgg16 or '../model.h5'</li> <li>keras_layers.example, for each list</li></ul> |
 | **SplitLayer** | Layer at which the model is split, must be one of the names used for the layers | block1_pool, in the case for vgg16 |
 | **Transmission** | <ul><li>rowsperpacket: number of rows of the feature map to be considered as one packet</li><li>quantization: number of bits and bool value indicating whether this paramter is to be included for this simulation</li><li>channel: a channel is selected by providing a bool for the include parameter for that channel, corresponding channel parameters are provided</li><li>concealment: technique for packet loss concealment is chosen by providing a bool value in the include paramter for that technique, corresponding paramters must be provided</li></ul> | <ul><li>8, True</li><li> to select randomLossChannel: 0, True</li></li><li>to select linear concealment, include: True</li></ul> | 
-| **OutputDir** | directory where the results of the simulation must be stored | '../simData' |
+| **OutputDir** | directory where the results of the simulation must be stored | 'simData' |
 
 The taskParams configuration file consists of the following paramters for each selected task:
 
