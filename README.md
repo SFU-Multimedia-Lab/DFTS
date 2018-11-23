@@ -20,7 +20,7 @@ A [recent study](https://dl.acm.org/citation.cfm?id=3037698) has shown that powe
 - One that runs on the mobile device
 - The other that runs in the cloud
 
-![DFTS image](_static/img/collaInt.png)
+![DFTS image](_static/img/Simulator_diagram_small.png)
 
 Our simulator is developed in Python to run with Keras models. The user can choose a keras model and specify the following:
 - Layer at which the model is split
