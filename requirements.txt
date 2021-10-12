@@ -34,7 +34,7 @@ mkl-random==1.0.1
 numba==0.38.0
 numpy==1.14.2
 olefile==0.45.1
-opencv-python==3.4.2.17
+opencv-python==3.4.7.28
 parso==0.3.1
 pickleshare==0.7.4
 Pillow==5.2.0
